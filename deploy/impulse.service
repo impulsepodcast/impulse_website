@@ -1,0 +1,17 @@
+[Unit]
+Description=Impulse website
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=__TARGET_DIR__
+Environment=NODE_ENV=production
+Environment=PORT=__PORT__
+ExecStart=/usr/bin/env npm start
+Restart=always
+RestartSec=5
+User=__APP_USER__
+Group=__APP_GROUP__
+
+[Install]
+WantedBy=multi-user.target

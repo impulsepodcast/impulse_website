@@ -1,0 +1,21 @@
+{
+  "name": "impulse-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "compile": "npm run clean && tsc -p tsconfig.json",
+    "build": "npm run compile && node dist/scripts/sync-episodes.js",
+    "validate:episodes": "npm run compile && node dist/scripts/validate-episodes.js",
+    "package:deploy": "./deploy/package-deploy.sh",
+    "start": "node dist/server.js"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "plyr": "^3.8.4"
+  }
+}

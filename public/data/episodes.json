@@ -1,0 +1,30 @@
+[
+  {
+    "id": "episode-59",
+    "number": 59,
+    "slug": "59-episode-title",
+    "title": "Episode title exactly as it should appear on the site",
+    "guest": "Guest full name",
+    "company": "Company or organization",
+    "summary": "One concise paragraph used on cards, the homepage, and SEO descriptions.",
+    "body": "## Episode notes\n\nWrite the long-form show notes here.\n\n- Add key takeaways as bullets.\n- Add links with markdown syntax like [Impulse](https://www.impulsepodcast.com).\n- Keep the filename aligned with the episode title, for example `59-episode-title.md`.",
+    "image": "/static/images/episodes/59-episode-title.svg",
+    "releasedAt": "2026-07-15",
+    "tags": [
+      "AI",
+      "Imaging"
+    ],
+    "links": {
+      "spotify": "https://open.spotify.com/episode/...",
+      "apple": "https://podcasts.apple.com/...",
+      "google": "https://podcasts.google.com/...",
+      "youtube": "https://www.youtube.com/watch?v=...",
+      "amazon": "https://music.amazon.com/...",
+      "rss": "https://feeds.megaphone.fm/..."
+    },
+    "previewAudio": "/static/audio/previews/59-episode.mp3",
+    "source": "markdown",
+    "createdAt": "2026-07-15T18:42:49.655Z",
+    "updatedAt": "2026-07-16T20:49:20.240Z"
+  }
+]

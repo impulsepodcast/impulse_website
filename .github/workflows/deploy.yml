@@ -1,0 +1,83 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: impulse-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.HETZNER_HOST != '' && secrets.HETZNER_USER != '' && secrets.HETZNER_SSH_KEY != '' && secrets.HETZNER_TARGET_DIR != '' }}
+    env:
+      HETZNER_PORT: ${{ secrets.HETZNER_PORT != '' && secrets.HETZNER_PORT || '22' }}
+      SERVICE_NAME: ${{ secrets.HETZNER_SERVICE_NAME != '' && secrets.HETZNER_SERVICE_NAME || 'impulse' }}
+      APP_PORT: ${{ secrets.APP_PORT != '' && secrets.APP_PORT || '3000' }}
+      TARGET_DIR: ${{ secrets.HETZNER_TARGET_DIR }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate markdown episodes
+        run: npm run validate:episodes
+
+      - name: Build deployment bundle
+        run: npm run build
+
+      - name: Prepare SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.HETZNER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${HETZNER_PORT}" -H "${{ secrets.HETZNER_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Package deployable files
+        run: |
+          tar \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            -czf impulse-deploy.tgz \
+            dist \
+            public \
+            content \
+            data \
+            deploy \
+            package.json \
+            package-lock.json \
+            README.md \
+            episodes.html
+
+      - name: Ensure remote target directory exists
+        run: |
+          ssh -p "${HETZNER_PORT}" "${{ secrets.HETZNER_USER }}@${{ secrets.HETZNER_HOST }}" "mkdir -p \"${TARGET_DIR}\""
+
+      - name: Upload bundle to Hetzner
+        run: |
+          scp -P "${HETZNER_PORT}" impulse-deploy.tgz "${{ secrets.HETZNER_USER }}@${{ secrets.HETZNER_HOST }}:${TARGET_DIR}/impulse-deploy.tgz"
+
+      - name: Deploy and restart service
+        run: |
+          ssh -p "${HETZNER_PORT}" "${{ secrets.HETZNER_USER }}@${{ secrets.HETZNER_HOST }}" <<EOF
+          set -euo pipefail
+          cd "${TARGET_DIR}"
+          tar -xzf impulse-deploy.tgz
+          npm ci --omit=dev
+          sudo systemctl restart "${SERVICE_NAME}"
+          sleep 2
+          curl -fsS "http://127.0.0.1:${APP_PORT}/" >/dev/null
+          EOF
