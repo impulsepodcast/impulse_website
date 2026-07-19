@@ -1,4 +1,4 @@
-import { copyFile, mkdir, rm, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 
@@ -28,6 +28,12 @@ async function copyClientBundleFile(fromPath: string, toPath: string): Promise<v
   await copyFile(fromPath, toPath);
 }
 
+async function copyDirectoryContents(fromPath: string, toPath: string): Promise<void> {
+  await rm(toPath, { recursive: true, force: true });
+  await ensureDirectory(dirname(toPath));
+  await cp(fromPath, toPath, { recursive: true });
+}
+
 function buildTags(episodes: Episode[]): string[] {
   const tags = new Set<string>();
 
@@ -48,6 +54,7 @@ async function removeGeneratedPublicFiles(publicPath: string): Promise<void> {
     rm(join(publicPath, "404"), { recursive: true, force: true }),
     rm(join(publicPath, "404.html"), { force: true }),
     rm(join(publicPath, ".nojekyll"), { force: true }),
+    rm(join(publicPath, "static"), { recursive: true, force: true }),
     rm(join(publicPath, "index.html"), { force: true }),
     rm(join(publicPath, "index.json"), { force: true })
   ]);
@@ -89,6 +96,10 @@ async function main() {
     writeTextFile(join(publicPath, "404", "index.html"), notFoundHtml),
     writeTextFile(join(publicPath, "404.html"), notFoundHtml),
     writeTextFile(join(publicPath, ".nojekyll"), ""),
+    copyClientBundleFile(join(projectRoot, "public", "styles.css"), join(publicPath, "static", "styles.css")),
+    copyDirectoryContents(join(projectRoot, "public", "images"), join(publicPath, "static", "images")),
+    copyDirectoryContents(join(projectRoot, "public", "audio"), join(publicPath, "static", "audio")),
+    copyDirectoryContents(join(projectRoot, "public", "vendor"), join(publicPath, "static", "vendor")),
     copyClientBundleFile(join(projectRoot, "dist", "client", "player.js"), join(clientPublicPath, "player.js")),
     copyClientBundleFile(join(projectRoot, "dist", "client", "episodes.js"), join(clientPublicPath, "episodes.js")),
     writeJsonFile(join(publicPath, "data", "episodes.json"), episodes),
