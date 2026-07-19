@@ -7,7 +7,9 @@ This project keeps the custom TypeScript website, but the publishing workflow is
 - new episodes added through markdown files in [content/episodes](/Users/myceane/impulse_website/content/episodes)
 - tag-based episode filtering
 - sticky site listener for 2-minute preview extracts
-- GitHub Actions CI and Hetzner deployment workflow
+- GitHub Actions CI
+- GitHub Pages deployment workflow for testing
+- Hetzner deployment workflow kept for the next step
 
 ## Publishing flow
 
@@ -78,7 +80,35 @@ The sticky listener is rendered on every page.
 - When the preview ends, the listener nudges visitors to continue on the streaming platforms.
 - If a markdown episode has no preview clip, the player stays in CTA mode and still shows the available platform links.
 
-## Hosting on Hetzner
+## Testing on GitHub Pages
+
+The repo now includes a dedicated GitHub Pages workflow at [.github/workflows/pages.yml](/Users/myceane/impulse_website/.github/workflows/pages.yml).
+
+It:
+
+- installs dependencies
+- validates markdown episodes
+- builds the site with a GitHub Pages base path
+- uploads the generated `public/` folder as the Pages artifact
+
+To use it:
+
+1. Push to `main`, or run the workflow manually from the Actions tab.
+2. In the repository settings, open `Pages`.
+3. Set the source to `GitHub Actions`.
+
+The workflow automatically handles both:
+
+- user or org Pages repos like `your-name.github.io`
+- project Pages repos like `your-name.github.io/impulse_website`
+
+The build now also emits:
+
+- `public/404.html` for GitHub Pages custom 404 support
+- `public/.nojekyll`
+- `public/static/client/*.js` so the static Pages artifact includes the compiled browser scripts
+
+## Hosting on Hetzner later
 
 This still fits a standard Hetzner Ubuntu server well. The repo now includes first-run deploy templates in [deploy](/Users/myceane/impulse_website/deploy).
 
@@ -167,12 +197,13 @@ That script installs production dependencies and restarts the `impulse` service 
 
 ## GitHub Actions
 
-Two workflows are included:
+Three workflows are included:
 
 - [.github/workflows/ci.yml](/Users/myceane/impulse_website/.github/workflows/ci.yml): installs dependencies, validates markdown episodes, and builds the site
-- [.github/workflows/deploy.yml](/Users/myceane/impulse_website/.github/workflows/deploy.yml): builds locally, uploads a deployment bundle to Hetzner, installs production deps remotely, restarts the systemd service, and checks the app health endpoint on the server
+- [.github/workflows/pages.yml](/Users/myceane/impulse_website/.github/workflows/pages.yml): builds the static site for GitHub Pages and deploys `public/`
+- [.github/workflows/deploy.yml](/Users/myceane/impulse_website/.github/workflows/deploy.yml): manual Hetzner deployment workflow kept for the next step
 
-For deployment, set these repository secrets:
+For the Hetzner deployment workflow, set these repository secrets:
 
 - `HETZNER_HOST`
 - `HETZNER_USER`

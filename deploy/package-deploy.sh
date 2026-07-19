@@ -23,8 +23,7 @@ tar \
   deploy \
   package.json \
   package-lock.json \
-  README.md \
-  episodes.html
+  README.md
 
 echo "Bundle ready: ${BUNDLE_PATH}"
 echo "Next:"

@@ -1,4 +1,4 @@
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 
@@ -23,6 +23,11 @@ async function writeJsonFile(pathname: string, payload: unknown): Promise<void> 
   await writeTextFile(pathname, JSON.stringify(payload, null, 2));
 }
 
+async function copyClientBundleFile(fromPath: string, toPath: string): Promise<void> {
+  await ensureDirectory(dirname(toPath));
+  await copyFile(fromPath, toPath);
+}
+
 function buildTags(episodes: Episode[]): string[] {
   const tags = new Set<string>();
 
@@ -41,6 +46,8 @@ async function removeGeneratedPublicFiles(publicPath: string): Promise<void> {
     rm(join(publicPath, "data"), { recursive: true, force: true }),
     rm(join(publicPath, "episodes"), { recursive: true, force: true }),
     rm(join(publicPath, "404"), { recursive: true, force: true }),
+    rm(join(publicPath, "404.html"), { force: true }),
+    rm(join(publicPath, ".nojekyll"), { force: true }),
     rm(join(publicPath, "index.html"), { force: true }),
     rm(join(publicPath, "index.json"), { force: true })
   ]);
@@ -48,6 +55,8 @@ async function removeGeneratedPublicFiles(publicPath: string): Promise<void> {
 
 async function main() {
   const publicPath = join(projectRoot, "public");
+  const clientPublicPath = join(publicPath, "static", "client");
+  const notFoundHtml = renderNotFoundPage();
   const syncedEpisodes = await syncEpisodeCatalog({
     dataFilePath: join(projectRoot, "data", "episodes.json"),
     markdownEpisodesDir: join(projectRoot, "content", "episodes")
@@ -77,7 +86,11 @@ async function main() {
       episodes,
       tags
     }),
-    writeTextFile(join(publicPath, "404", "index.html"), renderNotFoundPage()),
+    writeTextFile(join(publicPath, "404", "index.html"), notFoundHtml),
+    writeTextFile(join(publicPath, "404.html"), notFoundHtml),
+    writeTextFile(join(publicPath, ".nojekyll"), ""),
+    copyClientBundleFile(join(projectRoot, "dist", "client", "player.js"), join(clientPublicPath, "player.js")),
+    copyClientBundleFile(join(projectRoot, "dist", "client", "episodes.js"), join(clientPublicPath, "episodes.js")),
     writeJsonFile(join(publicPath, "data", "episodes.json"), episodes),
     writeJsonFile(join(publicPath, "data", "tags.json"), tags)
   ]);

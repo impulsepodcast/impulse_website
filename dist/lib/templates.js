@@ -1,4 +1,4 @@
-import { PLATFORM_ICON_PATHS, PLATFORM_LABELS, SITE, SUPPORTS_PATHS } from "./site-config.js";
+import { PLATFORM_ICON_PATHS, PLATFORM_LABELS, SITE, SUPPORTS_PATHS, sitePath, siteUrlForPath } from "./site-config.js";
 import { escapeAttribute, escapeHtml, formatDate } from "./utils.js";
 function pageTitle(title) {
     if (title === SITE.name) {
@@ -8,7 +8,8 @@ function pageTitle(title) {
 }
 function navLink(path, label, currentPath) {
     const active = path === currentPath;
-    return `<a class="nav-link${active ? " is-active" : ""}" href="${path}"${active ? ' aria-current="page"' : ""}>${escapeHtml(label)}</a>`;
+    const href = sitePath(path);
+    return `<a class="nav-link${active ? " is-active" : ""}" href="${escapeAttribute(href)}"${active ? ' aria-current="page"' : ""}>${escapeHtml(label)}</a>`;
 }
 function titleCaseWords(value) {
     return value
@@ -49,7 +50,7 @@ function renderPlatformIconLink(key, url, options) {
     return `
     <a class="platform-link${options?.withText ? " platform-link--text" : ""}" href="${escapeAttribute(url)}" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="${escapeAttribute(PLATFORM_ICON_PATHS[key])}" alt="${escapeAttribute(label)}">
+        <img src="${escapeAttribute(sitePath(PLATFORM_ICON_PATHS[key]))}" alt="${escapeAttribute(label)}">
       </span>
       ${options?.withText ? `<span>${escapeHtml(label)}</span>` : ""}
     </a>
@@ -92,7 +93,7 @@ function serializeJsonScript(value) {
         .replace(/\u2029/g, "\\u2029");
 }
 function renderMarkdownInline(value) {
-    return escapeHtml(value).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_match, label, url) => `<a href="${escapeAttribute(url)}" target="_blank" rel="noreferrer"/>`);
+    return escapeHtml(value).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_match, label, url) => `<a href="${escapeAttribute(url)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`);
 }
 function renderEpisodeBody(markdown) {
     if (!markdown?.trim()) {
@@ -166,7 +167,7 @@ function renderStickyPlayer(episode) {
     const artwork = episode.image ||
         "/images/default-podcast-cover.png";
     return `
-    <div class="sticky-player" data-sticky-player data-sticky-player-url="/episodes/${escapeAttribute(episode.slug)}">
+    <div class="sticky-player" data-sticky-player data-sticky-player-url="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
       ${episode.previewAudio
         ? `
             <audio
@@ -175,7 +176,7 @@ function renderStickyPlayer(episode) {
               data-sticky-player-audio
             >
               <source
-                src="${escapeAttribute(episode.previewAudio)}"
+                src="${escapeAttribute(sitePath(episode.previewAudio))}"
                 type="audio/mpeg"
               >
             </audio>
@@ -241,7 +242,7 @@ function renderStickyPlayer(episode) {
         <div class="sticky-player__episode">
           <img
             class="sticky-player__artwork"
-            src="${escapeAttribute(artwork)}"
+            src="${escapeAttribute(sitePath(artwork))}"
             alt=""
           >
 
@@ -323,10 +324,10 @@ function renderHeader(path) {
     return `
     <header class="site-header">
       <div class="container shell shell--legacy">
-        <a class="brand brand--legacy" href="/">
+        <a class="brand brand--legacy" href="${escapeAttribute(sitePath("/"))}">
           <img
             class="brand-image"
-            src="${SITE.assets.brandLogo}"
+            src="${escapeAttribute(sitePath(SITE.assets.brandLogo))}"
             alt="Impulse Podcast"
           >
         </a>
@@ -353,19 +354,19 @@ function renderFooter() {
           <div class="support-carousel">
             <div class="support-carousel__track">
               <!-- Logos -->
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png1'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png2'])}" alt=">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png3'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png4'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png5'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png6'])}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" alt="">
 
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png1'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png2'])}" alt=">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png3'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png4'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png5'])}" alt="">
-              <img src="${escapeAttribute(SUPPORTS_PATHS['png6'])}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" alt="">
             </div>
           </div>
 
@@ -386,12 +387,12 @@ function renderFooter() {
         <div class="footer-brand">
           <img
             class="footer-brand-image"
-            src="${SITE.assets.brandLogo}"
+            src="${escapeAttribute(sitePath(SITE.assets.brandLogo))}"
             alt="Impulse Podcast"
           >
           <p>${escapeHtml(SITE.description)} ${escapeHtml(SITE.extendedDescription)}</p>
           <a class="support-badge" href="${SITE.links.healthPodcastNetwork}" target="_blank" rel="noreferrer">
-            <img src="${SITE.assets.healthPodcastNetworkBadge}" alt="Health Podcast Network">
+            <img src="${escapeAttribute(sitePath(SITE.assets.healthPodcastNetworkBadge))}" alt="Health Podcast Network">
           </a>
         </div>
         <div class="footer-columns">
@@ -450,17 +451,18 @@ function renderTagList(tags) {
 }
 function renderEpisodeCard(episode) {
     const guestName = displayGuestName(episode);
+    const episodePath = sitePath(`/episodes/${episode.slug}`);
     return `
     <article class="episode-card" data-episode-card data-tags="${escapeAttribute(episode.tags.join(","))}" data-search="${escapeAttribute(`${episode.title} ${guestName} ${episode.summary}`.toLowerCase())}">
-      <a class="episode-card__image" href="/episodes/${escapeAttribute(episode.slug)}">
-        <img src="${escapeAttribute(episode.image)}" alt="${escapeAttribute(`${guestName} on Impulse`)}" loading="lazy">
+      <a class="episode-card__image" href="${escapeAttribute(episodePath)}">
+        <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(`${guestName} on Impulse`)}" loading="lazy">
       </a>
       <div class="episode-card__body">
         <div class="episode-card__meta">
           <span class="episode-number">Episode ${episode.number}</span>
           <span>${escapeHtml(formatDate(episode.releasedAt))}</span>
         </div>
-        <h3><a href="/episodes/${escapeAttribute(episode.slug)}">${escapeHtml(episode.title)}</a></h3>
+        <h3><a href="${escapeAttribute(episodePath)}">${escapeHtml(episode.title)}</a></h3>
         <p class="episode-guest">${escapeHtml(guestName)}</p>
         <p class="episode-summary">${escapeHtml(episode.summary)}</p>
         <div class="tag-row">
@@ -472,7 +474,7 @@ function renderEpisodeCard(episode) {
 }
 function renderBasePage(options) {
     const description = options.description ?? SITE.description;
-    const scriptSet = new Set(["/static/client/player.js", ...(options.scripts ?? [])]);
+    const scriptSet = new Set([sitePath("/static/client/player.js"), ...(options.scripts ?? []).map(sitePath)]);
     return `<!doctype html>
 <html lang="en">
   <head>
@@ -483,8 +485,8 @@ function renderBasePage(options) {
     <meta property="og:title" content="${escapeAttribute(pageTitle(options.title))}">
     <meta property="og:description" content="${escapeAttribute(description)}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://${SITE.domain}${options.path === "/" ? "" : options.path}">
-    <link rel="stylesheet" href="/static/styles.css">
+    <meta property="og:url" content="${escapeAttribute(siteUrlForPath(options.path))}">
+    <link rel="stylesheet" href="${escapeAttribute(sitePath("/static/styles.css"))}">
   </head>
   <body>
     <div class="page-bg page-bg--top"></div>
@@ -530,7 +532,7 @@ export function renderHomePage(episodes, tags) {
                     <p class="brand-hero__label">Follow the podcast:</p>
                     <a class="platform-link" href="${SITE.links.brandLinkedIn}" target="_blank" rel="noreferrer">
                       <span class="platform-icon">
-                        <img src="${SITE.assets.linkedInIcon}" alt="LinkedIn">
+                        <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="LinkedIn">
                       </span>
                     </a>
                   </div>
@@ -563,8 +565,8 @@ export function renderHomePage(episodes, tags) {
                 </div>
               </div>
             </div>
-            <a class="latest-hero__image" href="/episodes/${escapeAttribute(latest.slug)}">
-              <img src="${escapeAttribute(latest.image)}" alt="${escapeAttribute(`${latestGuest} on Impulse`)}">
+            <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${latest.slug}`))}">
+              <img src="${escapeAttribute(sitePath(latest.image))}" alt="${escapeAttribute(`${latestGuest} on Impulse`)}">
             </a>
             <div class="latest-hero__player">
               <p class="latest-hero__excerpt">${escapeHtml(latest.summary)}</p>
@@ -578,13 +580,13 @@ export function renderHomePage(episodes, tags) {
             <div class="home-archive__grid">
               ${featured
             .map((episode) => `
-                    <a class="home-archive__card" href="/episodes/${escapeAttribute(episode.slug)}">
-                      <img src="${escapeAttribute(episode.image)}" alt="${escapeAttribute(`${displayGuestName(episode)} on Impulse`)}">
+                    <a class="home-archive__card" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
+                      <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(`${displayGuestName(episode)} on Impulse`)}">
                       <span class="home-archive__number">#${episode.number}</span>
                     </a>
                   `)
             .join("")}
-              <a class="home-archive__more" href="/episodes">
+              <a class="home-archive__more" href="${escapeAttribute(sitePath("/episodes"))}">
                 <span>View all episodes</span>
               </a>
             </div>
@@ -670,8 +672,8 @@ export function renderEpisodePage(episode, episodes) {
                 </div>
               </div>
             </div>
-            <a class="latest-hero__image" href="/episodes/${escapeAttribute(episode.slug)}">
-              <img src="${escapeAttribute(episode.image)}" alt="${escapeAttribute(`${guestName} on Impulse`)}">
+            <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
+              <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(`${guestName} on Impulse`)}">
             </a>
             <div class="latest-hero__player">
               <div class="audio-bar">
@@ -689,13 +691,13 @@ export function renderEpisodePage(episode, episodes) {
             <div class="home-archive__grid">
               ${relatedEpisodes
             .map((relatedEpisode) => `
-                    <a class="home-archive__card" href="/episodes/${escapeAttribute(relatedEpisode.slug)}">
-                      <img src="${escapeAttribute(relatedEpisode.image)}" alt="${escapeAttribute(`${displayGuestName(relatedEpisode)} on Impulse`)}">
+                    <a class="home-archive__card" href="${escapeAttribute(sitePath(`/episodes/${relatedEpisode.slug}`))}">
+                      <img src="${escapeAttribute(sitePath(relatedEpisode.image))}" alt="${escapeAttribute(`${displayGuestName(relatedEpisode)} on Impulse`)}">
                       <span class="home-archive__number">#${relatedEpisode.number}</span>
                     </a>
                   `)
             .join("")}
-              <a class="home-archive__more" href="/episodes">
+              <a class="home-archive__more" href="${escapeAttribute(sitePath("/episodes"))}">
                 <span>View all episodes</span>
               </a>
             </div>
@@ -718,7 +720,7 @@ export function renderAboutPage(episodes) {
         <section class="page-hero page-hero--legacy">
           <div class="container about-grid about-grid--legacy">
             <div class="about-photo">
-              <img src="${escapeAttribute(SITE.hostPhoto)}" alt="${escapeAttribute(SITE.ownerName)}">
+              <img src="${escapeAttribute(sitePath(SITE.hostPhoto))}" alt="${escapeAttribute(SITE.ownerName)}">
             </div>
             <div class="about-copy">
               <h1 class = "about_name">${escapeHtml(SITE.ownerName)}</h1>
@@ -745,7 +747,7 @@ export function renderAboutPage(episodes) {
                     rel="noreferrer"
                   >
                     <span class="about-contact__icon" aria-hidden="true">
-                      <img src="${escapeAttribute(SITE.assets.linkedInIcon)}" alt="">
+                      <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="">
                     </span>
                     <span>Connect on LinkedIn</span>
                   </a>
@@ -766,7 +768,7 @@ export function renderAboutPage(episodes) {
               <p class="eyebrow">Current archive</p>
               <h2>${episodes.length} episodes and growing</h2>
               <p>New episodes now ship from markdown files, which keeps publishing lightweight while preserving the visual language of the original site.</p>
-              <a class="inline-link" href="/episodes">Explore the archive</a>
+              <a class="inline-link" href="${escapeAttribute(sitePath("/episodes"))}">Explore the archive</a>
             </div>
           </div>
         </section>
@@ -787,8 +789,8 @@ export function renderNotFoundPage() {
             <h1>That page does not exist</h1>
             <p>Try the archive or jump back to the homepage.</p>
             <div class="hero-actions hero-actions--tight">
-              <a class="button button--primary" href="/">Home</a>
-              <a class="button button--ghost" href="/episodes">Episodes</a>
+              <a class="button button--primary" href="${escapeAttribute(sitePath("/"))}">Home</a>
+              <a class="button button--ghost" href="${escapeAttribute(sitePath("/episodes"))}">Episodes</a>
             </div>
           </div>
         </section>

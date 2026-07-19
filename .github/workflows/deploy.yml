@@ -1,13 +1,10 @@
-name: Deploy
+name: Deploy to Hetzner
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 concurrency:
-  group: impulse-production
+  group: impulse-hetzner
   cancel-in-progress: true
 
 jobs:
@@ -56,11 +53,10 @@ jobs:
             public \
             content \
             data \
-            deploy \
-            package.json \
-            package-lock.json \
-            README.md \
-            episodes.html
+          deploy \
+          package.json \
+          package-lock.json \
+          README.md
 
       - name: Ensure remote target directory exists
         run: |
