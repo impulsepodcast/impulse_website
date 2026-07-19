@@ -142,6 +142,7 @@ If you leave `APP_USER` and `APP_GROUP` unset, the bootstrap script uses the cur
 ### 2. Copy the project manually if you are not using GitHub Actions yet
 
 Upload the project folder to the server, for example into `/var/www/impulse`.
+New run
 
 ### 3. Install and build once manually
 
