@@ -30,6 +30,32 @@
   },
   "relatedEpisodes": [
     {
+      "id": "episode-1",
+      "number": 1,
+      "slug": "1-episode",
+      "title": "Measuring your arterial age to prevent heart diseases",
+      "guest": "Ted Baldwin",
+      "company": "Imageens",
+      "summary": "Ted is leading Imageens, a company applying artificial intelligence to medical imaging with the aim to quantify your arterial age, with the potential to anticipate heart conditions and inform better clinical care decisions.",
+      "body": "## Episode notes\n\nCardiovascular diseases represent the leading cause of deaths worldwide. Despite the permanent progress in the treatment of such conditions, targeted prevention approaches remain a key solution to address this issue.\n \nThis is the challenge that Imageens, a Paris-based startup led by Ted Baldwin, is tackling through the application of artificial intelligence to medical imaging, with the aim to quantify your arterial age.\n\nThis specific biomarker unvails unique opportunities to anticipate heart conditions for people at moderate risk, with the promise to inform better clinical care decisions.\n \nWe exchanged with Ted on the burden that cardiovascular diseases represent on a global level, the power of AI applied to medical imaging to discover early indicators of these pathologies, and how these insights can drive better personalized prevention programs to stay away from them.\n\nWhat we also talked with Ted about:\n\t•\tAssistance Publique - Hôpitaux de Paris (AP-HP)\n\t•\tMESA trial\n\t•\tFramingham risk score\n\t•\tCardiac CT calcium score\n\t•\tAscending aortic distensibility\n\t•\tTed’s TEDx presentation\n\t•\tGanymed Robotics\n\t•\tZoï\n\t•\tAltos Labs\n\t•\tQualitiso\n \nIf you want to know more about Imageens, we invite you to consult their website.\n \nYou can contact Ted through LinkedIn or by email: tbaldwin@imageens.com\n \nIf you want to give me feedback on the episode, ask questions or suggest potential guests, feel free to do so through LinkedIn or by email: m.chaffard05@gmail.com\n\nAnd if you liked the episode, don’t hesitate to share it, subscribe to the podcast and leave a positive review on streaming platforms!",
+      "image": "/static/images/episodes/1-measuring-your-arterial-age-to-prevent-heart-diseases.jpg",
+      "releasedAt": "2022-02-22",
+      "tags": [
+        "AI",
+        "Imaging"
+      ],
+      "links": {
+        "spotify": "https://open.spotify.com/episode/4xT3vkTaOMGRIHEBgDY491?si=7d4ee5bb0ced44c3&nd=1&dlsi=0794b85ba1704820",
+        "apple": "https://podcasts.apple.com/us/podcast/measuring-your-arterial-age-to-prevent-heart-diseases/id1608213336?i=1000549802383",
+        "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/2b12e075-3294-419f-90c8-aa40e14833dd/impulse---meeting-healthcare-pioneers-1---measuring-your-arterial-age-to-prevent-heart-diseases---ted-baldwin---imageens",
+        "rss": "https://feeds.megaphone.fm/impulse"
+      },
+      "previewAudio": "/static/audio/previews/Episode_1_Extract_Final",
+      "source": "markdown",
+      "createdAt": "2026-07-19T19:04:37.964Z",
+      "updatedAt": "2026-07-19T19:07:12.070Z"
+    },
+    {
       "id": "episode-59",
       "number": 59,
       "slug": "59-episode-title",

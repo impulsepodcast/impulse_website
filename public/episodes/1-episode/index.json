@@ -1,5 +1,5 @@
 {
-  "latestEpisode": {
+  "episode": {
     "id": "episode-1",
     "number": 1,
     "slug": "1-episode",
@@ -25,7 +25,7 @@
     "createdAt": "2026-07-19T19:04:37.964Z",
     "updatedAt": "2026-07-19T19:07:12.070Z"
   },
-  "featuredEpisodes": [
+  "relatedEpisodes": [
     {
       "id": "episode-58",
       "number": 58,
@@ -83,11 +83,5 @@
       "createdAt": "2026-07-15T18:42:49.655Z",
       "updatedAt": "2026-07-16T20:49:20.240Z"
     }
-  ],
-  "tags": [
-    "AI",
-    "GE",
-    "Imaging",
-    "Machine"
   ]
 }

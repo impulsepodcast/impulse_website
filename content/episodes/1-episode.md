@@ -4,7 +4,7 @@ title: "Measuring your arterial age to prevent heart diseases"
 guest: "Ted Baldwin"
 company: "Imageens"
 releasedAt: "2022-02-22"
-image: "/static/images/episodes/1-measuring-your-arterial-age-to-prevent-heart-diseases.jpg"
+image: "/static/images/episodes/1-measuring-your-arterial-age-to-prevent-heart-diseases.png"
 summary: "Ted is leading Imageens, a company applying artificial intelligence to medical imaging with the aim to quantify your arterial age, with the potential to anticipate heart conditions and inform better clinical care decisions."
 tags:
   - AI
@@ -14,7 +14,7 @@ links:
   apple: "https://podcasts.apple.com/us/podcast/measuring-your-arterial-age-to-prevent-heart-diseases/id1608213336?i=1000549802383"
   amazon: "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/2b12e075-3294-419f-90c8-aa40e14833dd/impulse---meeting-healthcare-pioneers-1---measuring-your-arterial-age-to-prevent-heart-diseases---ted-baldwin---imageens"
   rss: "https://feeds.megaphone.fm/impulse"
-previewAudio: "/static/audio/previews/Episode_1_Extract_Final"
+previewAudio: "/static/audio/previews/59-episode.mp3"
 ---
 ## Episode notes
 
