@@ -8,8 +8,8 @@
     <meta property="og:title" content="Episodes | Impulse">
     <meta property="og:description" content="Browse the full Impulse archive and filter episodes by topic tags.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ouldbay-abderrahmane.github.io/impulse_website/episodes">
-    <link rel="stylesheet" href="/impulse_website/static/styles.css">
+    <meta property="og:url" content="https://www.impulsepodcast.com/episodes">
+    <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
     <div class="page-bg page-bg--top"></div>
@@ -17,17 +17,17 @@
     
     <header class="site-header">
       <div class="container shell shell--legacy">
-        <a class="brand brand--legacy" href="/impulse_website/">
+        <a class="brand brand--legacy" href="/">
           <img
             class="brand-image"
-            src="/impulse_website/static/images/site/brand-logo.png"
+            src="/static/images/site/brand-logo.png"
             alt="Impulse Podcast"
           >
         </a>
         <nav class="site-nav" aria-label="Primary">
-          <a class="nav-link" href="/impulse_website/">Home</a>
-          <a class="nav-link is-active" href="/impulse_website/episodes" aria-current="page">Episodes</a>
-          <a class="nav-link" href="/impulse_website/about">About</a>
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link is-active" href="/episodes" aria-current="page">Episodes</a>
+          <a class="nav-link" href="/about">About</a>
         </nav>
         <a class="button button--primary header-subscribe" href="https://linktr.ee/impulse.podcast" target="_blank" rel="noreferrer">Subscribe!</a>
       </div>
@@ -48,11 +48,11 @@
               <input id="episode-search" type="search" placeholder="AI, oncology, Ricardo, imaging...">
             </form>
             <div class="filters-toolbar">
-              <p id="episode-count" class="filters-count">1 episodes</p>
+              <p id="episode-count" class="filters-count">2 episodes</p>
               <button id="clear-filters" class="button button--ghost" type="button">Clear filters</button>
             </div>
             <div id="tag-filter-bar" class="tag-bar" aria-label="Tag filters">
-              <button class="tag tag-button" type="button" data-tag="AI" aria-pressed="false">AI</button><button class="tag tag-button" type="button" data-tag="Imaging" aria-pressed="false">Imaging</button>
+              <button class="tag tag-button" type="button" data-tag="AI" aria-pressed="false">AI</button><button class="tag tag-button" type="button" data-tag="GE" aria-pressed="false">GE</button><button class="tag tag-button" type="button" data-tag="Imaging" aria-pressed="false">Imaging</button><button class="tag tag-button" type="button" data-tag="Machine" aria-pressed="false">Machine</button>
             </div>
           </div>
         </section>
@@ -61,16 +61,34 @@
           <div class="container">
             <div id="episode-grid" class="cards-grid cards-grid--legacy">
               
+    <article class="episode-card" data-episode-card data-tags="GE,Imaging,Machine" data-search="episode 58 exactly as it should appear on the site guest full name one concise paragraph used on cards, the homepage, and seo descriptions.">
+      <a class="episode-card__image" href="/episodes/58-episode-simon">
+        <img src="/static/images/episodes/59-episode-title.svg" alt="Guest full name on Impulse" loading="lazy">
+      </a>
+      <div class="episode-card__body">
+        <div class="episode-card__meta">
+          <span class="episode-number">Episode 58</span>
+          <span>July 10, 2026</span>
+        </div>
+        <h3><a href="/episodes/58-episode-simon">Episode 58 exactly as it should appear on the site</a></h3>
+        <p class="episode-guest">Guest full name</p>
+        <p class="episode-summary">One concise paragraph used on cards, the homepage, and SEO descriptions.</p>
+        <div class="tag-row">
+          <span class="tag">GE</span><span class="tag">Imaging</span><span class="tag">Machine</span>
+        </div>
+      </div>
+    </article>
+  
     <article class="episode-card" data-episode-card data-tags="AI,Imaging" data-search="episode title exactly as it should appear on the site guest full name one concise paragraph used on cards, the homepage, and seo descriptions.">
-      <a class="episode-card__image" href="/impulse_website/episodes/59-episode-title">
-        <img src="/impulse_website/static/images/episodes/59-episode-title.svg" alt="Guest full name on Impulse" loading="lazy">
+      <a class="episode-card__image" href="/episodes/59-episode-title">
+        <img src="/static/images/episodes/59-episode-title.svg" alt="Guest full name on Impulse" loading="lazy">
       </a>
       <div class="episode-card__body">
         <div class="episode-card__meta">
           <span class="episode-number">Episode 59</span>
           <span>July 15, 2026</span>
         </div>
-        <h3><a href="/impulse_website/episodes/59-episode-title">Episode title exactly as it should appear on the site</a></h3>
+        <h3><a href="/episodes/59-episode-title">Episode title exactly as it should appear on the site</a></h3>
         <p class="episode-guest">Guest full name</p>
         <p class="episode-summary">One concise paragraph used on cards, the homepage, and SEO descriptions.</p>
         <div class="tag-row">
@@ -84,11 +102,11 @@
           </div>
         </section>
       </main>
-      <script id="episodes-data" type="application/json">[{"id":"episode-59","number":59,"slug":"59-episode-title","title":"Episode title exactly as it should appear on the site","guest":"Guest full name","company":"Company or organization","summary":"One concise paragraph used on cards, the homepage, and SEO descriptions.","body":"## Episode notes\n\nWrite the long-form show notes here.\n\n- Add key takeaways as bullets.\n- Add links with markdown syntax like [Impulse](https://www.impulsepodcast.com).\n- Keep the filename aligned with the episode title, for example `59-episode-title.md`.","image":"/static/images/episodes/59-episode-title.svg","releasedAt":"2026-07-15","tags":["AI","Imaging"],"links":{"spotify":"https://open.spotify.com/episode/...","apple":"https://podcasts.apple.com/...","google":"https://podcasts.google.com/...","youtube":"https://www.youtube.com/watch?v=...","amazon":"https://music.amazon.com/...","rss":"https://feeds.megaphone.fm/..."},"previewAudio":"/static/audio/previews/59-episode.mp3","source":"markdown","createdAt":"2026-07-15T18:42:49.655Z","updatedAt":"2026-07-16T20:49:20.240Z"}]</script>
-      <script id="episode-tags" type="application/json">["AI","Imaging"]</script>
+      <script id="episodes-data" type="application/json">[{"id":"episode-58","number":58,"slug":"58-episode-simon","title":"Episode 58 exactly as it should appear on the site","guest":"Guest full name","company":"Company or organization","summary":"One concise paragraph used on cards, the homepage, and SEO descriptions.","body":"## Episode notes\n\nWrite the long-form show notes here.\n\n- Add key takeaways as bullets.\n- Add links with markdown syntax like [Impulse](https://www.impulsepodcast.com).\n- Keep the filename aligned with the episode title, for example `59-episode-title.md`.","image":"/static/images/episodes/59-episode-title.svg","releasedAt":"2026-07-10","tags":["GE","Imaging","Machine"],"links":{"spotify":"https://open.spotify.com/episode/...","apple":"https://podcasts.apple.com/...","google":"https://podcasts.google.com/...","youtube":"https://www.youtube.com/watch?v=...","amazon":"https://music.amazon.com/...","rss":"https://feeds.megaphone.fm/..."},"previewAudio":"/static/audio/previews/59-episode.mp3","source":"markdown","createdAt":"2026-07-16T20:49:20.240Z","updatedAt":"2026-07-19T16:49:56.102Z"},{"id":"episode-59","number":59,"slug":"59-episode-title","title":"Episode title exactly as it should appear on the site","guest":"Guest full name","company":"Company or organization","summary":"One concise paragraph used on cards, the homepage, and SEO descriptions.","body":"## Episode notes\n\nWrite the long-form show notes here.\n\n- Add key takeaways as bullets.\n- Add links with markdown syntax like [Impulse](https://www.impulsepodcast.com).\n- Keep the filename aligned with the episode title, for example `59-episode-title.md`.","image":"/static/images/episodes/59-episode-title.svg","releasedAt":"2026-07-15","tags":["AI","Imaging"],"links":{"spotify":"https://open.spotify.com/episode/...","apple":"https://podcasts.apple.com/...","google":"https://podcasts.google.com/...","youtube":"https://www.youtube.com/watch?v=...","amazon":"https://music.amazon.com/...","rss":"https://feeds.megaphone.fm/..."},"previewAudio":"/static/audio/previews/59-episode.mp3","source":"markdown","createdAt":"2026-07-15T18:42:49.655Z","updatedAt":"2026-07-16T20:49:20.240Z"}]</script>
+      <script id="episode-tags" type="application/json">["AI","GE","Imaging","Machine"]</script>
     
     
-    <div class="sticky-player" data-sticky-player data-sticky-player-url="/impulse_website/episodes/59-episode-title">
+    <div class="sticky-player" data-sticky-player data-sticky-player-url="/episodes/58-episode-simon">
       
             <audio
               preload="metadata"
@@ -96,7 +114,7 @@
               data-sticky-player-audio
             >
               <source
-                src="/impulse_website/static/audio/previews/59-episode.mp3"
+                src="/static/audio/previews/59-episode.mp3"
                 type="audio/mpeg"
               >
             </audio>
@@ -161,13 +179,13 @@
         <div class="sticky-player__episode">
           <img
             class="sticky-player__artwork"
-            src="/impulse_website/static/images/episodes/59-episode-title.svg"
+            src="/static/images/episodes/59-episode-title.svg"
             alt=""
           >
 
           <div class="sticky-player__content">
             <h2 class="sticky-player__title">
-              Episode title exactly as it should appear on the site
+              Episode 58 exactly as it should appear on the site
             </h2>
 
             <div class="sticky-player__meta-row">
@@ -175,35 +193,35 @@
                 
     <a class="platform-link" href="https://open.spotify.com/episode/..." target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/spotify.png" alt="Spotify">
+        <img src="/static/images/platforms/spotify.png" alt="Spotify">
       </span>
       
     </a>
   
     <a class="platform-link" href="https://podcasts.apple.com/..." target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/apple-podcasts.png" alt="Apple Podcasts">
+        <img src="/static/images/platforms/apple-podcasts.png" alt="Apple Podcasts">
       </span>
       
     </a>
   
     <a class="platform-link" href="https://podcasts.google.com/..." target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/google-podcasts.png" alt="Google Podcasts">
+        <img src="/static/images/platforms/google-podcasts.png" alt="Google Podcasts">
       </span>
       
     </a>
   
     <a class="platform-link" href="https://www.youtube.com/watch?v=..." target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/youtube.png" alt="YouTube">
+        <img src="/static/images/platforms/youtube.png" alt="YouTube">
       </span>
       
     </a>
   
     <a class="platform-link" href="https://music.amazon.com/..." target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/amazon-music.png" alt="Amazon Music">
+        <img src="/static/images/platforms/amazon-music.png" alt="Amazon Music">
       </span>
       
     </a>
@@ -274,19 +292,19 @@
           <div class="support-carousel">
             <div class="support-carousel__track">
               <!-- Logos -->
-              <img src="/impulse_website/static/images/supports/health-podcast-network.png" alt="">
-              <img src="/impulse_website/static/images/supports/Health.Tech-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/HLTH_Europe-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/MedTech_World-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/Robert_Wood_Johnson-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/Vanderbilt_University-01.png" alt="">
+              <img src="/static/images/supports/health-podcast-network.png" alt="">
+              <img src="/static/images/supports/Health.Tech-01.png" alt="">
+              <img src="/static/images/supports/HLTH_Europe-01.png" alt="">
+              <img src="/static/images/supports/MedTech_World-01.png" alt="">
+              <img src="/static/images/supports/Robert_Wood_Johnson-01.png" alt="">
+              <img src="/static/images/supports/Vanderbilt_University-01.png" alt="">
 
-              <img src="/impulse_website/static/images/supports/health-podcast-network.png" alt="">
-              <img src="/impulse_website/static/images/supports/Health.Tech-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/HLTH_Europe-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/MedTech_World-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/Robert_Wood_Johnson-01.png" alt="">
-              <img src="/impulse_website/static/images/supports/Vanderbilt_University-01.png" alt="">
+              <img src="/static/images/supports/health-podcast-network.png" alt="">
+              <img src="/static/images/supports/Health.Tech-01.png" alt="">
+              <img src="/static/images/supports/HLTH_Europe-01.png" alt="">
+              <img src="/static/images/supports/MedTech_World-01.png" alt="">
+              <img src="/static/images/supports/Robert_Wood_Johnson-01.png" alt="">
+              <img src="/static/images/supports/Vanderbilt_University-01.png" alt="">
             </div>
           </div>
 
@@ -301,28 +319,28 @@
             
     <a class="platform-link" href="https://open.spotify.com/show/4hMXpuZRFbxQSfpq25CBcJ?si=743539df2d324630" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/spotify.png" alt="Spotify">
+        <img src="/static/images/platforms/spotify.png" alt="Spotify">
       </span>
       
     </a>
   
     <a class="platform-link" href="https://podcasts.apple.com/us/podcast/impulse-meeting-healthcare-pioneers/id1608213336" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/apple-podcasts.png" alt="Apple">
+        <img src="/static/images/platforms/apple-podcasts.png" alt="Apple">
       </span>
       
     </a>
   
     <a class="platform-link" href="https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkcy5tZWdhcGhvbmUuZm0vaW1wdWxzZQ" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/google-podcasts.png" alt="Google">
+        <img src="/static/images/platforms/google-podcasts.png" alt="Google">
       </span>
       
     </a>
   
     <a class="platform-link" href="https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/impulse---meeting-healthcare-pioneers" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/impulse_website/static/images/platforms/amazon-music.png" alt="Amazon">
+        <img src="/static/images/platforms/amazon-music.png" alt="Amazon">
       </span>
       
     </a>
@@ -335,12 +353,12 @@
         <div class="footer-brand">
           <img
             class="footer-brand-image"
-            src="/impulse_website/static/images/site/brand-logo.png"
+            src="/static/images/site/brand-logo.png"
             alt="Impulse Podcast"
           >
           <p>Impulse is the podcast where we dive into the most exciting breakthroughs in healthcare of our time. In each episode, we sit down with some of the brightest minds who are using technology to rethink the way we care.</p>
           <a class="support-badge" href="https://healthpodcastnetwork.com/show/impulse/" target="_blank" rel="noreferrer">
-            <img src="/impulse_website/static/images/site/health-podcast-network.png" alt="Health Podcast Network">
+            <img src="/static/images/site/health-podcast-network.png" alt="Health Podcast Network">
           </a>
         </div>
         <div class="footer-columns">
@@ -373,6 +391,6 @@
       <span class = "footer-copyrights">© 2026 by Mathieu Chaffard - All Rights Reserved</span>
     </footer>
   
-    <script type="module" src="/impulse_website/static/client/player.js"></script><script type="module" src="/impulse_website/static/client/episodes.js"></script>
+    <script type="module" src="/static/client/player.js"></script><script type="module" src="/static/client/episodes.js"></script>
   </body>
 </html>
