@@ -34,7 +34,8 @@ export const SITE = {
   assets: {
     brandLogo: "/static/images/site/brand-logo.png",
     healthPodcastNetworkBadge: "/static/images/site/health-podcast-network.png",
-    linkedInIcon: "/static/images/site/linkedin.png"
+    linkedInIcon: "/static/images/site/linkedin.png",
+    wave: "/static/images/site/Home_Page.svg"
   },
   links: {
     subscribe: "https://linktr.ee/impulse.podcast",
@@ -108,3 +109,30 @@ export const SUPPORTS_PATHS = {
   png5:"/static/images/supports/Robert_Wood_Johnson-01.png",
   png6:"/static/images/supports/Vanderbilt_University-01.png"
 } as const;
+
+export const TESTIMONIALS = [
+  {
+    name: "Omar",
+    image: "/static/images/testimonials/Omar-01.png"
+  },
+  {
+    name: "Elsa",
+    image: "/static/images/testimonials/Elsa-01.png"
+  },
+  {
+    name: "Thibault",
+    image: "/static/images/testimonials/Thibault-01.png"
+  },
+  {
+    name: "Jim",
+    image: "/static/images/testimonials/Jim-01.png"
+  },
+  {
+    name: "Nico",
+    image: "/static/images/testimonials/Nico-01.png"
+  },
+  {
+    name: "Tiffany",
+    image: "/static/images/testimonials/Tiffany-01.png"
+  }
+] as const;

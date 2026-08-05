@@ -1,4 +1,4 @@
-import { PLATFORM_ICON_PATHS, PLATFORM_LABELS, SITE, SUPPORTS_PATHS, sitePath, siteUrlForPath } from "./site-config.js";
+import { PLATFORM_ICON_PATHS, PLATFORM_LABELS, SITE, SUPPORTS_PATHS, TESTIMONIALS, sitePath, siteUrlForPath } from "./site-config.js";
 import { escapeAttribute, escapeHtml, formatDate } from "./utils.js";
 function pageTitle(title) {
     if (title === SITE.name) {
@@ -151,8 +151,53 @@ function renderEpisodeBody(markdown) {
     }
     return `
     <section class="episode-notes">
-      <div class="container episode-notes__inner">
-        ${blocks.join("")}
+      <div class="container">
+        <div class="episode-notes__inner">
+          <div class="episode-notes__surface">
+            ${blocks.join("")}
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+function renderTestimonialsSection() {
+    return `
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="section-heading section-heading--stack testimonials-section__heading">
+          <p class="eyebrow">Testimonials</p>
+          <h2>Conversations that resonate across the healthcare ecosystem</h2>
+          <p>Guests, operators, founders, and listeners who make the Impulse community what it is.</p>
+        </div>
+        <div class="testimonials-grid">
+          ${TESTIMONIALS.map((testimonial) => `
+              <article class="testimonial-card">
+                <div
+                  class="testimonial-card__media"
+                  style="background-image: url('${escapeAttribute(sitePath(testimonial.image))}')"
+                  aria-label="${escapeAttribute(testimonial.name)}"
+                ></div>
+                <div class="testimonial-card__body">
+                  <h3>${escapeHtml(testimonial.name)}</h3>
+                </div>
+              </article>
+            `).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+function renderCollaborationSection() {
+    return `
+    <section class="collaboration-strip">
+      <div class="container collaboration-strip__inner">
+        <div class="collaboration-strip__copy">
+          <p class="eyebrow">Let’s Build Something Together</p>
+          <h2>A Collaboration To Propose?</h2>
+          <p>${escapeHtml(SITE.collaborationPrompt)} Let’s get in touch.</p>
+        </div>
+        <a class="button button--primary collaboration-strip__button" href="${escapeAttribute(SITE.links.contactEmail)}">Let’s get in touch</a>
       </div>
     </section>
   `;
@@ -520,12 +565,8 @@ export function renderHomePage(episodes, tags) {
               <div class="brand-hero__copy">
                 <div class="brand-hero__statement">
                   <div class="brand-hero__wave">
-                    <svg viewBox="0 0 900 220" aria-hidden="true" class="heartbeat-svg">
-                      <path d="M0 140 H290 L315 140 L334 20 L356 208 L384 140 H900" class="heartbeat-svg__shadow"></path>
-                      <path d="M0 132 H290 L315 132 L334 12 L356 200 L384 132 H900" class="heartbeat-svg__main"></path>
-                    </svg>
+                    <img src="${escapeAttribute(sitePath(SITE.assets.wave))}" aria-hidden="true" class="heartbeat-svg">
                   </div>
-                  <text class="brand-hero__wave__text">Meet the people shaping medical progress</h1>
                 </div>
                 <div class="brand-hero__socials">
                   <div class="brand-hero__socials__follow">
@@ -592,7 +633,8 @@ export function renderHomePage(episodes, tags) {
             </div>
           </div>
         </section>
-
+        ${renderTestimonialsSection()}
+        ${renderCollaborationSection()}
       </main>
     `
     });
@@ -621,10 +663,12 @@ export function renderEpisodesPage(episodes, tags) {
             </form>
             <div class="filters-toolbar">
               <p id="episode-count" class="filters-count">${episodes.length} episodes</p>
-              <button id="clear-filters" class="button button--ghost" type="button">Clear filters</button>
             </div>
             <div id="tag-filter-bar" class="tag-bar" aria-label="Tag filters">
               ${tags.map(renderTag).join("")}
+            </div>
+            <div class="filters-actions">
+              <button id="clear-filters" class="button button--ghost filters-clear" type="button">Clear filters</button>
             </div>
           </div>
         </section>
@@ -676,10 +720,6 @@ export function renderEpisodePage(episode, episodes) {
               <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(`${guestName} on Impulse`)}">
             </a>
             <div class="latest-hero__player">
-              <div class="audio-bar">
-                <span class="audio-bar__play"></span>
-                <span class="audio-bar__track"></span>
-              </div>
               <p class="latest-hero__excerpt">${escapeHtml(episode.summary)}</p>
             </div>
           </div>
@@ -772,6 +812,8 @@ export function renderAboutPage(episodes) {
             </div>
           </div>
         </section>
+        ${renderTestimonialsSection()}
+        ${renderCollaborationSection()}
       </main>
     `
     });

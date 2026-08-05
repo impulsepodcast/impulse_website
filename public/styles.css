@@ -106,7 +106,7 @@ code {
 }
 
 .brand-image {
-  width: min(355px, 100%);
+  width: min(255px, 100%);
   height: auto;
 }
 
@@ -244,8 +244,10 @@ code {
 }
 
 .heartbeat-svg {
-  width: 100%;
-  height: auto;
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  display: block;
 }
 
 .heartbeat-svg__shadow {
@@ -267,10 +269,6 @@ code {
 .brand-hero__socials {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 10px solid var(--cyan);
 }
 
 .brand-hero__socials__links{
@@ -440,35 +438,84 @@ code {
 }
 
 .episode-notes {
-  padding: 0.5rem 0 2.75rem;
+  padding: 0.75rem 0 3.5rem;
 }
 
 .episode-notes__inner {
-  max-width: 760px;
+  max-width: 860px;
+  margin: 0 auto;
   color: var(--muted);
+}
+
+.episode-notes__surface {
+  padding: 2rem 2rem 2.2rem;
+  border: 1px solid rgba(48, 76, 244, 0.12);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(31, 227, 227, 0.06), rgba(255, 255, 255, 0.96) 20%),
+    #fff;
+  box-shadow: 0 20px 40px rgba(48, 76, 244, 0.08);
 }
 
 .episode-notes__inner h2,
 .episode-notes__inner h3 {
-  margin: 0 0 0.8rem;
+  margin: 2rem 0 0.85rem;
   color: var(--blue);
   font-family: "GothamBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.episode-notes__inner h2:first-child,
+.episode-notes__inner h3:first-child {
+  margin-top: 0;
+}
+
+.episode-notes__inner h2 {
+  font-size: clamp(1.5rem, 2.1vw, 2rem);
+  line-height: 1.12;
+}
+
+.episode-notes__inner h3 {
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  line-height: 1.2;
+}
+
 .episode-notes__inner p,
 .episode-notes__inner li {
-  font-size: 0.98rem;
-  line-height: 1.7;
+  font-size: 1.06rem;
+  line-height: 1.82;
+}
+
+.episode-notes__inner p {
+  margin: 0 0 1rem;
 }
 
 .episode-notes__inner ul {
-  padding-left: 1.2rem;
+  margin: 0.4rem 0 1.2rem;
+  padding-left: 1.3rem;
 }
 
 .episode-notes__inner a {
-  color: var(--blue);
+  color: var(--pink);
   text-decoration: underline;
-  text-underline-offset: 0.12em;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.16em;
+}
+
+.episode-notes__inner a:hover,
+.episode-notes__inner a:focus-visible {
+  color: var(--blue);
+}
+
+.inline-link {
+  color: var(--pink);
+  text-decoration: underline;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.16em;
+}
+
+.inline-link:hover,
+.inline-link:focus-visible {
+  color: var(--blue);
 }
 
 .home-archive {
@@ -595,6 +642,11 @@ code {
   padding: 1.6rem;
 }
 
+.filters-panel {
+  display: grid;
+  gap: 1rem;
+}
+
 .search-field,
 .search-field label {
   display: grid;
@@ -639,6 +691,28 @@ code {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.filters-toolbar {
+  align-items: center;
+}
+
+.filters-count {
+  margin: 0;
+}
+
+.filters-actions {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 0.2rem;
+}
+
+.filters-clear {
+  min-height: 2.9rem;
+  padding: 0.7rem 1.1rem;
+  border-width: 1px;
+  border-radius: 12px;
+  font-size: 0.95rem;
 }
 
 .footer-copyrights {
@@ -752,6 +826,85 @@ code {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.testimonials-section {
+  padding: 0.25rem 0 3.5rem;
+}
+
+.testimonials-section__heading {
+  max-width: 760px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.testimonial-card {
+  overflow: hidden;
+  border: 1px solid rgba(48, 76, 244, 0.1);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.testimonial-card__media {
+  aspect-ratio: 1 / 1;
+  background-color: rgba(48, 76, 244, 0.06);
+  background-image:
+    linear-gradient(180deg, rgba(31, 227, 227, 0.16), rgba(48, 76, 244, 0.04));
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.testimonial-card__body {
+  padding: 1rem 1rem 1.15rem;
+}
+
+.testimonial-card__body h3 {
+  margin: 0;
+  color: var(--blue);
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+.collaboration-strip {
+  padding: 0 0 3.75rem;
+}
+
+.collaboration-strip__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.5rem 2rem;
+  padding: 2rem;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--pink), #ff549b 55%, #ff7fb4);
+  box-shadow: 0 24px 44px rgba(239, 43, 131, 0.2);
+}
+
+.collaboration-strip__copy h2 {
+  margin: 0.35rem 0 0.65rem;
+  color: var(--cyan);
+  font-size: clamp(1.6rem, 2.8vw, 2.45rem);
+  line-height: 1.04;
+}
+
+.collaboration-strip__copy p:last-child {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  max-width: 42rem;
+}
+
+.collaboration-strip__button {
+  min-width: 220px;
 }
 
 .newsletter-strip {
@@ -888,7 +1041,7 @@ footer{
 
 .sticky-player__progress {
   position: absolute;
-  z-index: 2;
+  z-index: 100;
   top: 0;
   right: 0;
   left: 0;
@@ -1279,34 +1432,6 @@ footer{
   width: 100%;
 }
 
-You can add a simple, continuously scrolling logo carousel inside that section like this.
-
-HTML
-<section class="support-strip">
-  <div class="container support-strip__inner">
-    <h2>They Support Us!</h2>
-
-    <div class="support-carousel">
-      <div class="support-carousel__track">
-        <!-- Logos -->
-        <img src="images/logo1.png" alt="Partner 1">
-        <img src="images/logo2.png" alt="Partner 2">
-        <img src="images/logo3.png" alt="Partner 3">
-        <img src="images/logo4.png" alt="Partner 4">
-        <img src="images/logo5.png" alt="Partner 5">
-
-        <!-- Duplicate for seamless loop -->
-        <img src="images/logo1.png" alt="Partner 1">
-        <img src="images/logo2.png" alt="Partner 2">
-        <img src="images/logo3.png" alt="Partner 3">
-        <img src="images/logo4.png" alt="Partner 4">
-        <img src="images/logo5.png" alt="Partner 5">
-      </div>
-    </div>
-
-  </div>
-</section>
-CSS
 .support-strip {
   padding: 4rem 0;
   text-align: center;
@@ -1331,7 +1456,7 @@ CSS
 }
 
 .support-carousel__track img {
-  height: 60px;
+  height: 100px;
   width: auto;
   object-fit: contain;
   opacity: 0.8;
@@ -1383,7 +1508,7 @@ CSS
   }
 
   .brand-image {
-    width: min(280px, 100%);
+    width: min(180px, 100%);
   }
 
   .site-nav {
@@ -1423,6 +1548,15 @@ CSS
 
   .home-archive__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .testimonials-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .collaboration-strip__inner {
+    grid-template-columns: 1fr;
+    justify-items: start;
   }
 }
 
@@ -1472,6 +1606,8 @@ CSS
   .latest-hero,
   .home-archive,
   .legacy-section,
+  .testimonials-section,
+  .collaboration-strip,
   .newsletter-strip,
   .subscribe-strip,
   .support-strip {
@@ -1527,7 +1663,8 @@ CSS
 
   .cards-grid,
   .footer-columns,
-  .home-archive__grid {
+  .home-archive__grid,
+  .testimonials-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1536,6 +1673,10 @@ CSS
   .filters-toolbar {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .filters-actions {
+    padding-top: 0;
   }
 
   .footer-panel {
@@ -1550,6 +1691,17 @@ CSS
 
   .about-contact__actions .button {
     width: 100%;
+  }
+
+  .episode-notes__surface,
+  .collaboration-strip__inner {
+    padding: 1.35rem;
+    border-radius: 22px;
+  }
+
+  .collaboration-strip__button {
+    width: 100%;
+    min-width: 0;
   }
 
   .footer-brand-image {
@@ -1604,6 +1756,11 @@ CSS
 }
 
 @media (max-width: 480px) {
+
+  .brand-image {
+    display: None;
+  }
+
   .nav-link {
     font-size: 0.94rem;
   }
