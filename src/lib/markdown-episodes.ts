@@ -1,8 +1,8 @@
 import { access, readdir, readFile, stat } from "node:fs/promises";
-import { basename, extname, join } from "node:path";
+import { basename, extname, join, resolve } from "node:path";
 
 import type { Episode, EpisodeLinks } from "./types.js";
-import { slugify, toDateString } from "./utils.js";
+import { slugify, stableSortByNumberDesc, toDateString } from "./utils.js";
 
 const ALLOWED_LINK_KEYS = new Set<keyof EpisodeLinks>([
   "spotify",
@@ -195,12 +195,101 @@ function requiredArray(
   return value.map((item) => item.trim()).filter(Boolean);
 }
 
+function buildImageStemLookup(fileNames: string[]): Map<string, string> {
+  const rankByExtension = new Map<string, number>([
+    [".webp", 0],
+    [".avif", 1],
+    [".png", 2],
+    [".jpg", 3],
+    [".jpeg", 4],
+    [".svg", 5]
+  ]);
+  const lookup = new Map<string, string>();
+
+  for (const fileName of fileNames) {
+    const stem = basename(fileName, extname(fileName));
+    const current = lookup.get(stem);
+
+    if (!current) {
+      lookup.set(stem, fileName);
+      continue;
+    }
+
+    const nextRank = rankByExtension.get(extname(fileName).toLowerCase()) ?? Number.MAX_SAFE_INTEGER;
+    const currentRank =
+      rankByExtension.get(extname(current).toLowerCase()) ?? Number.MAX_SAFE_INTEGER;
+
+    if (nextRank < currentRank) {
+      lookup.set(stem, fileName);
+    }
+  }
+
+  return lookup;
+}
+
+function buildImageNumberLookup(fileNames: string[]): Map<number, string> {
+  const lookup = new Map<number, string>();
+
+  for (const fileName of fileNames) {
+    const match = fileName.match(/^(\d+)-/);
+    if (!match) {
+      continue;
+    }
+
+    const episodeNumber = Number(match[1]);
+    if (!lookup.has(episodeNumber)) {
+      lookup.set(episodeNumber, fileName);
+    }
+  }
+
+  return lookup;
+}
+
+function resolveEpisodeImagePath(
+  imagePath: string,
+  episodeNumber: number,
+  availableImageFiles: Set<string>,
+  imageStemLookup: Map<string, string>,
+  imageNumberLookup: Map<number, string>
+): string {
+  const staticPrefix = "/static/images/episodes/";
+  if (!imagePath.startsWith(staticPrefix)) {
+    return imagePath;
+  }
+
+  const fileName = imagePath.slice(staticPrefix.length);
+  if (availableImageFiles.has(fileName)) {
+    return imagePath;
+  }
+
+  const stem = basename(fileName, extname(fileName));
+  const resolvedFileName = imageStemLookup.get(stem);
+
+  if (resolvedFileName) {
+    return `${staticPrefix}${resolvedFileName}`;
+  }
+
+  const numberMatchedFileName = imageNumberLookup.get(episodeNumber);
+  if (numberMatchedFileName) {
+    return `${staticPrefix}${numberMatchedFileName}`;
+  }
+
+  return imagePath;
+}
+
 export async function loadMarkdownEpisodes(markdownDirPath: string): Promise<Episode[]> {
   try {
     await access(markdownDirPath);
   } catch {
     return [];
   }
+
+  const projectRoot = resolve(markdownDirPath, "../..");
+  const imageDirPath = join(projectRoot, "public", "images", "episodes");
+  const imageFiles = await readdir(imageDirPath).catch(() => []);
+  const availableImageFiles = new Set(imageFiles);
+  const imageStemLookup = buildImageStemLookup(imageFiles);
+  const imageNumberLookup = buildImageNumberLookup(imageFiles);
 
   const files = (await readdir(markdownDirPath))
     .filter((fileName) => fileName.endsWith(".md"))
@@ -220,12 +309,18 @@ export async function loadMarkdownEpisodes(markdownDirPath: string): Promise<Epi
       const guest = requiredString(parsed.frontmatter, "guest", filePath);
       const company = optionalString(parsed.frontmatter, "company");
       const summary = requiredString(parsed.frontmatter, "summary", filePath);
-      const image = requiredString(parsed.frontmatter, "image", filePath);
+      const image = resolveEpisodeImagePath(
+        requiredString(parsed.frontmatter, "image", filePath),
+        number,
+        availableImageFiles,
+        imageStemLookup,
+        imageNumberLookup
+      );
       const releasedAt = toDateString(
         String(parsed.frontmatter.releasedAt ?? parsed.frontmatter.releaseDate ?? "")
       );
       const tags = requiredArray(parsed.frontmatter, "tags", filePath);
-      const previewAudio = requiredString(parsed.frontmatter, "previewAudio", filePath);
+      const previewAudio = optionalString(parsed.frontmatter, "previewAudio");
       const links = coerceLinks(parsed.frontmatter.links, filePath);
 
       return {
@@ -265,5 +360,5 @@ export async function loadMarkdownEpisodes(markdownDirPath: string): Promise<Epi
     seenSlugs.add(episode.slug);
   }
 
-  return episodes;
+  return stableSortByNumberDesc(episodes);
 }

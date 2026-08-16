@@ -84,6 +84,33 @@ function renderEpisodePlatformCtas(episode) {
     }
     return renderSitePlatformLinks(false);
 }
+function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function buildEpisodeNumberLookup(episodes) {
+    return new Map(episodes.map((episode) => [episode.number, episode]));
+}
+function resolveEpisodePageUrl(url, episodeNumberLookup) {
+    const episodeMatch = url.match(/^https?:\/\/(?:www\.)?impulsepodcast\.com\/episode-(\d+)\/?$/i);
+    if (episodeMatch && episodeNumberLookup) {
+        const episode = episodeNumberLookup.get(Number(episodeMatch[1]));
+        if (episode) {
+            return {
+                href: sitePath(`/episodes/${episode.slug}`),
+                external: false
+            };
+        }
+    }
+    return { href: url, external: /^(?:[a-z]+:)?\/\//i.test(url) };
+}
+function highlightBuzzwords(value, buzzwords) {
+    let highlighted = value;
+    for (const buzzword of [...new Set(buzzwords.map((tag) => tag.trim()).filter(Boolean))].sort((left, right) => right.length - left.length)) {
+        const pattern = new RegExp(`(^|[^A-Za-z0-9])(${escapeRegExp(buzzword)})(?=$|[^A-Za-z0-9])`, "gi");
+        highlighted = highlighted.replace(pattern, (_match, prefix, matchedBuzzword) => `${prefix}<strong class="buzzword">${matchedBuzzword}</strong>`);
+    }
+    return highlighted;
+}
 function serializeJsonScript(value) {
     return JSON.stringify(value)
         .replace(/</g, "\\u003c")
@@ -92,10 +119,23 @@ function serializeJsonScript(value) {
         .replace(/\u2028/g, "\\u2028")
         .replace(/\u2029/g, "\\u2029");
 }
-function renderMarkdownInline(value) {
-    return escapeHtml(value).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_match, label, url) => `<a href="${escapeAttribute(url)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`);
+function renderMarkdownInline(value, options) {
+    const anchors = [];
+    const withLinksReplaced = escapeHtml(value).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_match, label, url) => {
+        const { href, external } = resolveEpisodePageUrl(url, options?.episodeNumberLookup);
+        const anchor = external
+            ? `<a class="inline-link" href="${escapeAttribute(href)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`
+            : `<a class="inline-link" href="${escapeAttribute(href)}">${escapeHtml(label)}</a>`;
+        const token = `__ANCHOR_${anchors.length}__`;
+        anchors.push(anchor);
+        return token;
+    });
+    const highlighted = options?.buzzwords?.length
+        ? highlightBuzzwords(withLinksReplaced, options.buzzwords)
+        : withLinksReplaced;
+    return highlighted.replace(/__ANCHOR_(\d+)__/g, (_match, index) => anchors[Number(index)] ?? "");
 }
-function renderEpisodeBody(markdown) {
+function renderEpisodeBody(markdown, options) {
     if (!markdown?.trim()) {
         return "";
     }
@@ -107,14 +147,14 @@ function renderEpisodeBody(markdown) {
         if (paragraph.length === 0) {
             return;
         }
-        blocks.push(`<p>${renderMarkdownInline(paragraph.join(" "))}</p>`);
+        blocks.push(`<p>${renderMarkdownInline(paragraph.join(" "), options)}</p>`);
         paragraph = [];
     }
     function flushList() {
         if (listItems.length === 0) {
             return;
         }
-        blocks.push(`<ul>${listItems.map((item) => `<li>${renderMarkdownInline(item)}</li>`).join("")}</ul>`);
+        blocks.push(`<ul>${listItems.map((item) => `<li>${renderMarkdownInline(item, options)}</li>`).join("")}</ul>`);
         listItems = [];
     }
     for (const line of lines) {
@@ -127,13 +167,13 @@ function renderEpisodeBody(markdown) {
         if (trimmed.startsWith("## ")) {
             flushParagraph();
             flushList();
-            blocks.push(`<h2>${renderMarkdownInline(trimmed.slice(3))}</h2>`);
+            blocks.push(`<h2>${renderMarkdownInline(trimmed.slice(3), options)}</h2>`);
             continue;
         }
         if (trimmed.startsWith("### ")) {
             flushParagraph();
             flushList();
-            blocks.push(`<h3>${renderMarkdownInline(trimmed.slice(4))}</h3>`);
+            blocks.push(`<h3>${renderMarkdownInline(trimmed.slice(4), options)}</h3>`);
             continue;
         }
         if (trimmed.startsWith("- ")) {
@@ -166,20 +206,20 @@ function renderTestimonialsSection() {
     <section class="testimonials-section">
       <div class="container">
         <div class="section-heading section-heading--stack testimonials-section__heading">
-          <p class="eyebrow">Testimonials</p>
           <h2>Conversations that resonate across the healthcare ecosystem</h2>
           <p>Guests, operators, founders, and listeners who make the Impulse community what it is.</p>
         </div>
         <div class="testimonials-grid">
           ${TESTIMONIALS.map((testimonial) => `
               <article class="testimonial-card">
-                <div
-                  class="testimonial-card__media"
-                  style="background-image: url('${escapeAttribute(sitePath(testimonial.image))}')"
-                  aria-label="${escapeAttribute(testimonial.name)}"
-                ></div>
                 <div class="testimonial-card__body">
-                  <h3>${escapeHtml(testimonial.name)}</h3>
+                  <p class="testimonial-card__rating">${escapeHtml(testimonial.rating)}</p>
+                  <h3>${escapeHtml(testimonial.title)}</h3>
+                  <p class="testimonial-card__quote">${escapeHtml(testimonial.body)}</p>
+                  <p class="testimonial-card__author">
+                    <span>${escapeHtml(testimonial.author)}</span>
+                    <span>${escapeHtml(testimonial.country)}</span>
+                  </p>
                 </div>
               </article>
             `).join("")}
@@ -399,19 +439,19 @@ function renderFooter() {
           <div class="support-carousel">
             <div class="support-carousel__track">
               <!-- Logos -->
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="">
 
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="">
             </div>
           </div>
 
@@ -623,7 +663,6 @@ export function renderHomePage(episodes, tags) {
             .map((episode) => `
                     <a class="home-archive__card" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
                       <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(`${displayGuestName(episode)} on Impulse`)}">
-                      <span class="home-archive__number">#${episode.number}</span>
                     </a>
                   `)
             .join("")}
@@ -664,8 +703,13 @@ export function renderEpisodesPage(episodes, tags) {
             <div class="filters-toolbar">
               <p id="episode-count" class="filters-count">${episodes.length} episodes</p>
             </div>
-            <div id="tag-filter-bar" class="tag-bar" aria-label="Tag filters">
-              ${tags.map(renderTag).join("")}
+            <div class="filters-tags">
+              <div id="tag-filter-bar" class="tag-bar tag-bar--collapsible" aria-label="Tag filters">
+                ${tags.map(renderTag).join("")}
+              </div>
+              <button id="toggle-tags" class="filters-tags__toggle" type="button" hidden aria-expanded="false">
+                See all tags
+              </button>
             </div>
             <div class="filters-actions">
               <button id="clear-filters" class="button button--ghost filters-clear" type="button">Clear filters</button>
@@ -678,6 +722,7 @@ export function renderEpisodesPage(episodes, tags) {
             <div id="episode-grid" class="cards-grid cards-grid--legacy">
               ${episodes.map(renderEpisodeCard).join("")}
             </div>
+            <nav id="episodes-pagination" class="pagination" aria-label="Episodes pages"></nav>
             <p id="empty-state" class="empty-state" hidden>No episodes match the current filters.</p>
           </div>
         </section>
@@ -692,6 +737,8 @@ export function renderEpisodePage(episode, episodes) {
     const companyName = displayCompanyName(episode);
     const relatedEpisodes = episodes.filter((entry) => entry.slug !== episode.slug).slice(0, 4);
     const stickyPlayerEpisode = episode.previewAudio ? episode : (episodes.find((entry) => Boolean(entry.previewAudio)) ?? episode);
+    const episodeNumberLookup = buildEpisodeNumberLookup(episodes);
+    const buzzwords = episode.tags;
     return renderBasePage({
         title: episode.title,
         path: `/episodes/${episode.slug}`,
@@ -720,7 +767,10 @@ export function renderEpisodePage(episode, episodes) {
               <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(`${guestName} on Impulse`)}">
             </a>
             <div class="latest-hero__player">
-              <p class="latest-hero__excerpt">${escapeHtml(episode.summary)}</p>
+              <p class="latest-hero__excerpt">${renderMarkdownInline(episode.summary, {
+            buzzwords,
+            episodeNumberLookup
+        })}</p>
             </div>
           </div>
         </section>
@@ -743,7 +793,7 @@ export function renderEpisodePage(episode, episodes) {
             </div>
           </div>
         </section>
-        ${renderEpisodeBody(episode.body)}
+        ${renderEpisodeBody(episode.body, { buzzwords, episodeNumberLookup })}
       </main>
     `
     });

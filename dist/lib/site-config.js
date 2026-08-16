@@ -90,27 +90,38 @@ export const SUPPORTS_PATHS = {
 };
 export const TESTIMONIALS = [
     {
-        name: "Omar",
-        image: "/static/images/testimonials/Omar-01.png"
+        author: "Eva Lana",
+        country: "United States",
+        rating: "★★★★★",
+        title: "Insider's guide to the medical world",
+        body: "Each episode feels like peeking behind the curtain with industry leaders. After listening, I'm inspired by the innovation shaping the future of healthcare. If you're curious about the latest breakthroughs, this podcast is your insider's guide to the medical world."
     },
     {
-        name: "Elsa",
-        image: "/static/images/testimonials/Elsa-01.png"
+        author: "Vivien_Louis",
+        country: "Switzerland",
+        rating: "★★★★★",
+        title: "Fascinating topics and guests!",
+        body: "Gives a great understanding of what's to come in medicine and what already transforms it. Very interesting, as well for those not in the healthcare space."
     },
     {
-        name: "Thibault",
-        image: "/static/images/testimonials/Thibault-01.png"
+        author: "./jan",
+        country: "Germany",
+        rating: "★★★★★",
+        title: "Fur alle die mitgestalten wollen ein absolutes Muss!",
+        body: "Absolut empfehlenswert fur alle, die im Gesundheitswesen mitgestalten wollen. Durch spannende Gaste kommen immer wieder frische Perspektiven und Impulse auf."
     },
     {
-        name: "Jim",
-        image: "/static/images/testimonials/Jim-01.png"
+        author: "Health_passionate",
+        country: "Switzerland",
+        rating: "★★★★★",
+        title: "Really interesting!",
+        body: "The hosts are knowledgeable, engaging, and make learning about medical topics enjoyable. The production quality is very good and the guests provide great insights on various health new technologies while making it accessible for everyone. I highly recommend this podcast to anyone who wants to stay informed about the latest in the world of healthcare."
     },
     {
-        name: "Nico",
-        image: "/static/images/testimonials/Nico-01.png"
-    },
-    {
-        name: "Tiffany",
-        image: "/static/images/testimonials/Tiffany-01.png"
+        author: "jmlaur",
+        country: "France",
+        rating: "★★★★★",
+        title: "Super podcast",
+        body: "Super innovative and inspiring subjects are presented, speakers are great, and the podcast is super professional. I just love it. Looking forward to the next episodes!"
     }
 ];

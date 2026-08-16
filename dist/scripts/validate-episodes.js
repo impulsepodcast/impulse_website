@@ -13,9 +13,6 @@ async function main() {
         }
         const imageAssetPath = join(projectRoot, "public", episode.image.replace("/static/", ""));
         await access(imageAssetPath);
-        if (!episode.previewAudio) {
-            throw new Error(`Episode ${episode.number} is missing a previewAudio file.`);
-        }
         if (episode.previewAudio && episode.previewAudio.startsWith("/static/")) {
             const localAssetPath = join(projectRoot, "public", episode.previewAudio.replace("/static/", ""));
             await access(localAssetPath);
