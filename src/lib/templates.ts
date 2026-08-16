@@ -956,7 +956,6 @@ export function renderEpisodePage(episode: Episode, episodes: Episode[]): string
                       <img src="${escapeAttribute(sitePath(relatedEpisode.image))}" alt="${escapeAttribute(
                         `${displayGuestName(relatedEpisode)} on Impulse`
                       )}">
-                      <span class="home-archive__number">#${relatedEpisode.number}</span>
                     </a>
                   `
                 )
