@@ -64,6 +64,29 @@ function contentTypeForPath(pathname: string): string {
   }
 }
 
+function cacheControlForPath(pathname: string): string {
+  const extension = extname(pathname).toLowerCase();
+
+  switch (extension) {
+    case ".css":
+    case ".js":
+    case ".png":
+    case ".jpg":
+    case ".jpeg":
+    case ".webp":
+    case ".avif":
+    case ".svg":
+    case ".mp3":
+    case ".wav":
+      return "public, max-age=86400";
+    case ".html":
+    case ".json":
+      return "no-cache";
+    default:
+      return "public, max-age=3600";
+  }
+}
+
 async function serveFile(
   request: IncomingMessage,
   response: ServerResponse<IncomingMessage>,
@@ -121,6 +144,7 @@ async function serveFile(
       await fileHandle.read(buffer, 0, chunkSize, start);
       response.writeHead(206, {
         "Accept-Ranges": "bytes",
+        "Cache-Control": cacheControlForPath(target),
         "Content-Length": chunkSize,
         "Content-Range": `bytes ${start}-${safeEnd}/${size}`,
         "Content-Type": contentTypeForPath(target)
@@ -135,6 +159,7 @@ async function serveFile(
   const content = await readFile(target);
   response.writeHead(statusCode, {
     "Accept-Ranges": "bytes",
+    "Cache-Control": cacheControlForPath(target),
     "Content-Type": contentTypeForPath(target)
   });
   response.end(content);

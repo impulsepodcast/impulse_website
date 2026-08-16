@@ -52,6 +52,27 @@ function contentTypeForPath(pathname) {
             return "application/octet-stream";
     }
 }
+function cacheControlForPath(pathname) {
+    const extension = extname(pathname).toLowerCase();
+    switch (extension) {
+        case ".css":
+        case ".js":
+        case ".png":
+        case ".jpg":
+        case ".jpeg":
+        case ".webp":
+        case ".avif":
+        case ".svg":
+        case ".mp3":
+        case ".wav":
+            return "public, max-age=86400";
+        case ".html":
+        case ".json":
+            return "no-cache";
+        default:
+            return "public, max-age=3600";
+    }
+}
 async function serveFile(request, response, target, statusCode = 200) {
     if (!existsSync(target)) {
         sendHtml(response, 404, renderNotFoundPage());
@@ -93,6 +114,7 @@ async function serveFile(request, response, target, statusCode = 200) {
             await fileHandle.read(buffer, 0, chunkSize, start);
             response.writeHead(206, {
                 "Accept-Ranges": "bytes",
+                "Cache-Control": cacheControlForPath(target),
                 "Content-Length": chunkSize,
                 "Content-Range": `bytes ${start}-${safeEnd}/${size}`,
                 "Content-Type": contentTypeForPath(target)
@@ -107,6 +129,7 @@ async function serveFile(request, response, target, statusCode = 200) {
     const content = await readFile(target);
     response.writeHead(statusCode, {
         "Accept-Ranges": "bytes",
+        "Cache-Control": cacheControlForPath(target),
         "Content-Type": contentTypeForPath(target)
     });
     response.end(content);

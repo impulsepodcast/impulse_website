@@ -48,8 +48,9 @@ async function removeGeneratedPublicFiles(publicPath) {
     ]);
 }
 async function main() {
-    const publicPath = join(projectRoot, "public");
-    const clientPublicPath = join(publicPath, "static", "client");
+    const sourcePublicPath = join(projectRoot, "public");
+    const outputPublicPath = sourcePublicPath;
+    const clientPublicPath = join(outputPublicPath, "static", "client");
     const notFoundHtml = renderNotFoundPage();
     const syncedEpisodes = await syncEpisodeCatalog({
         dataFilePath: join(projectRoot, "data", "episodes.json"),
@@ -57,44 +58,44 @@ async function main() {
     });
     const episodes = syncedEpisodes;
     const tags = buildTags(episodes);
-    await removeGeneratedPublicFiles(publicPath);
+    await removeGeneratedPublicFiles(outputPublicPath);
     await Promise.all([
         writeJsonFile(join(projectRoot, "data", "episodes.json"), {
             importedAt: new Date().toISOString(),
             episodes
         }),
-        writeTextFile(join(publicPath, "index.html"), renderHomePage(episodes, tags)),
-        writeJsonFile(join(publicPath, "index.json"), {
+        writeTextFile(join(outputPublicPath, "index.html"), renderHomePage(episodes, tags)),
+        writeJsonFile(join(outputPublicPath, "index.json"), {
             latestEpisode: episodes[0] ?? null,
             featuredEpisodes: episodes.slice(1, 5),
             tags
         }),
-        writeTextFile(join(publicPath, "about", "index.html"), renderAboutPage(episodes)),
-        writeJsonFile(join(publicPath, "about", "index.json"), {
+        writeTextFile(join(outputPublicPath, "about", "index.html"), renderAboutPage(episodes)),
+        writeJsonFile(join(outputPublicPath, "about", "index.json"), {
             episodeCount: episodes.length
         }),
-        writeTextFile(join(publicPath, "episodes", "index.html"), renderEpisodesPage(episodes, tags)),
-        writeJsonFile(join(publicPath, "episodes", "index.json"), {
+        writeTextFile(join(outputPublicPath, "episodes", "index.html"), renderEpisodesPage(episodes, tags)),
+        writeJsonFile(join(outputPublicPath, "episodes", "index.json"), {
             episodes,
             tags
         }),
-        writeTextFile(join(publicPath, "404", "index.html"), notFoundHtml),
-        writeTextFile(join(publicPath, "404.html"), notFoundHtml),
-        writeTextFile(join(publicPath, ".nojekyll"), ""),
-        copyClientBundleFile(join(projectRoot, "public", "styles.css"), join(publicPath, "static", "styles.css")),
-        copyDirectoryContents(join(projectRoot, "public", "images"), join(publicPath, "static", "images")),
-        copyDirectoryContents(join(projectRoot, "public", "audio"), join(publicPath, "static", "audio")),
-        copyDirectoryContents(join(projectRoot, "public", "vendor"), join(publicPath, "static", "vendor")),
+        writeTextFile(join(outputPublicPath, "404", "index.html"), notFoundHtml),
+        writeTextFile(join(outputPublicPath, "404.html"), notFoundHtml),
+        writeTextFile(join(outputPublicPath, ".nojekyll"), ""),
+        copyClientBundleFile(join(sourcePublicPath, "styles.css"), join(outputPublicPath, "static", "styles.css")),
+        copyDirectoryContents(join(sourcePublicPath, "images"), join(outputPublicPath, "static", "images")),
+        copyDirectoryContents(join(sourcePublicPath, "audio"), join(outputPublicPath, "static", "audio")),
+        copyDirectoryContents(join(sourcePublicPath, "vendor"), join(outputPublicPath, "static", "vendor")),
         copyClientBundleFile(join(projectRoot, "dist", "client", "player.js"), join(clientPublicPath, "player.js")),
         copyClientBundleFile(join(projectRoot, "dist", "client", "episodes.js"), join(clientPublicPath, "episodes.js")),
-        writeJsonFile(join(publicPath, "data", "episodes.json"), episodes),
-        writeJsonFile(join(publicPath, "data", "tags.json"), tags)
+        writeJsonFile(join(outputPublicPath, "data", "episodes.json"), episodes),
+        writeJsonFile(join(outputPublicPath, "data", "tags.json"), tags)
     ]);
     await Promise.all(episodes.map(async (episode) => {
         const relatedEpisodes = episodes.filter((entry) => entry.slug !== episode.slug).slice(0, 4);
         await Promise.all([
-            writeTextFile(join(publicPath, "episodes", episode.slug, "index.html"), renderEpisodePage(episode, episodes)),
-            writeJsonFile(join(publicPath, "episodes", episode.slug, "index.json"), {
+            writeTextFile(join(outputPublicPath, "episodes", episode.slug, "index.html"), renderEpisodePage(episode, episodes)),
+            writeJsonFile(join(outputPublicPath, "episodes", episode.slug, "index.json"), {
                 episode,
                 relatedEpisodes
             })

@@ -92,7 +92,9 @@ function renderPlatformIconLink(
       url
     )}" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="${escapeAttribute(sitePath(PLATFORM_ICON_PATHS[key]))}" alt="${escapeAttribute(label)}">
+        <img src="${escapeAttribute(sitePath(PLATFORM_ICON_PATHS[key]))}" alt="${escapeAttribute(
+      label
+    )}" loading="lazy" decoding="async">
       </span>
       ${options?.withText ? `<span>${escapeHtml(label)}</span>` : ""}
     </a>
@@ -566,19 +568,19 @@ function renderFooter(): string {
           <div class="support-carousel">
             <div class="support-carousel__track">
               <!-- Logos -->
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
 
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
             </div>
           </div>
 
@@ -604,7 +606,7 @@ function renderFooter(): string {
           >
           <p>${escapeHtml(SITE.description)} ${escapeHtml(SITE.extendedDescription)}</p>
           <a class="support-badge" href="${SITE.links.healthPodcastNetwork}" target="_blank" rel="noreferrer">
-            <img src="${escapeAttribute(sitePath(SITE.assets.healthPodcastNetworkBadge))}" alt="Health Podcast Network">
+            <img src="${escapeAttribute(sitePath(SITE.assets.healthPodcastNetworkBadge))}" alt="Health Podcast Network" loading="lazy" decoding="async">
           </a>
         </div>
         <div class="footer-columns">
@@ -685,7 +687,7 @@ function renderEpisodeCard(episode: Episode): string {
       <a class="episode-card__image" href="${escapeAttribute(episodePath)}">
         <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(
       `${guestName} on Impulse`
-    )}" loading="lazy">
+    )}" loading="lazy" decoding="async">
       </a>
       <div class="episode-card__body">
         <div class="episode-card__meta">
@@ -718,6 +720,8 @@ function renderBasePage(options: PageOptions): string {
     <meta property="og:description" content="${escapeAttribute(description)}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="${escapeAttribute(siteUrlForPath(options.path))}">
+    <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="//static.wixstatic.com">
     <link rel="stylesheet" href="${escapeAttribute(sitePath("/static/styles.css"))}">
   </head>
   <body>
@@ -754,7 +758,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
               <div class="brand-hero__copy">
                 <div class="brand-hero__statement">
                   <div class="brand-hero__wave">
-                    <img src="${escapeAttribute(sitePath(SITE.assets.wave))}" aria-hidden="true" class="heartbeat-svg">
+                    <img src="${escapeAttribute(sitePath(SITE.assets.wave))}" aria-hidden="true" class="heartbeat-svg" decoding="async" fetchpriority="high">
                   </div>
                 </div>
                 <div class="brand-hero__socials">
@@ -762,7 +766,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
                     <p class="brand-hero__label">Follow the podcast:</p>
                     <a class="platform-link" href="${SITE.links.brandLinkedIn}" target="_blank" rel="noreferrer">
                       <span class="platform-icon">
-                        <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="LinkedIn">
+                        <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="LinkedIn" decoding="async">
                       </span>
                     </a>
                   </div>
@@ -802,7 +806,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
             <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${latest.slug}`))}">
               <img src="${escapeAttribute(sitePath(latest.image))}" alt="${escapeAttribute(
       `${latestGuest} on Impulse`
-    )}">
+    )}" decoding="async" fetchpriority="high">
             </a>
             <div class="latest-hero__player">
               <p class="latest-hero__excerpt">${escapeHtml(latest.summary)}</p>
@@ -820,7 +824,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
                     <a class="home-archive__card" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
                       <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(
                         `${displayGuestName(episode)} on Impulse`
-                      )}">
+                      )}" loading="lazy" decoding="async">
                     </a>
                   `
                 )
@@ -934,7 +938,7 @@ export function renderEpisodePage(episode: Episode, episodes: Episode[]): string
             <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
               <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(
       `${guestName} on Impulse`
-    )}">
+    )}" decoding="async" fetchpriority="high">
             </a>
             <div class="latest-hero__player">
               <p class="latest-hero__excerpt">${renderMarkdownInline(episode.summary, {
@@ -955,7 +959,7 @@ export function renderEpisodePage(episode: Episode, episodes: Episode[]): string
                     <a class="home-archive__card" href="${escapeAttribute(sitePath(`/episodes/${relatedEpisode.slug}`))}">
                       <img src="${escapeAttribute(sitePath(relatedEpisode.image))}" alt="${escapeAttribute(
                         `${displayGuestName(relatedEpisode)} on Impulse`
-                      )}">
+                      )}" loading="lazy" decoding="async">
                     </a>
                   `
                 )
@@ -985,7 +989,9 @@ export function renderAboutPage(episodes: Episode[]): string {
         <section class="page-hero page-hero--legacy">
           <div class="container about-grid about-grid--legacy">
             <div class="about-photo">
-              <img src="${escapeAttribute(sitePath(SITE.hostPhoto))}" alt="${escapeAttribute(SITE.ownerName)}">
+              <img src="${escapeAttribute(sitePath(SITE.hostPhoto))}" alt="${escapeAttribute(
+      SITE.ownerName
+    )}" decoding="async">
             </div>
             <div class="about-copy">
               <h1 class = "about_name">${escapeHtml(SITE.ownerName)}</h1>
@@ -1012,7 +1018,7 @@ export function renderAboutPage(episodes: Episode[]): string {
                     rel="noreferrer"
                   >
                     <span class="about-contact__icon" aria-hidden="true">
-                      <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="">
+                      <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="" loading="lazy" decoding="async">
                     </span>
                     <span>Connect on LinkedIn</span>
                   </a>

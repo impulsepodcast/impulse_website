@@ -431,12 +431,26 @@ code {
 
 .latest-hero__excerpt {
   max-width: 62ch;
-  margin: 1.5rem 0 0;
+  margin: -4rem 0 0;
   color: #555;
   font-size: 0.95rem;
   line-height: 1.6;
   font-family: "ImpulseBody", "GothamLight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
+}
+
+@media (max-width: 1050px) {
+
+  .latest-hero__excerpt {
+    margin: 0rem 0 0;
+  }
+}
+
+@media (min-width: 1350px) {
+
+  .latest-hero__excerpt {
+    margin: -5rem 0 0;
+  }
 }
 
 .episode-notes {
@@ -1574,8 +1588,8 @@ footer{
 }
 
 .image-network{
-  height: 50px;
-  width: 60px;
+  height: 80px;
+  width: auto;
   object-fit: contain;
   opacity: 0.8;
   transition: opacity 0.3s ease, transform 0.3s ease;
