@@ -23,10 +23,11 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/f6e5be40-5507-4ada-ad66-b810a6cf760b/impulse---meeting-healthcare-pioneers-58---leading-at-scale-in-the-medical-imaging-business---simon-rost---ge-healthcare",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "previewAudio": "/static/audio/previews/58-leading-at-scale-in-the-medical-imaging-business.mp3",
     "transcriptDownload": "/static/transcripts/58-leading-at-scale-in-the-medical-imaging-business.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.294Z",
-    "updatedAt": "2026-08-16T18:35:09.269Z"
+    "updatedAt": "2026-08-30T13:03:32.565Z"
   },
   {
     "id": "episode-57",

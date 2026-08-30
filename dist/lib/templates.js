@@ -758,11 +758,11 @@ export function renderHomePage(episodes, tags) {
                   ${renderEpisodePlatformLinks(latest)}
                 </div>
               </div>
-              <p class="latest-hero__excerpt">${escapeHtml(latest.summary)}</p>
             </div>
             <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${latest.slug}`))}">
               <img src="${escapeAttribute(assetPath(latest.image))}" alt="${escapeAttribute(`${latestGuest} on Impulse`)}" decoding="async" fetchpriority="high">
             </a>
+            <p class="latest-hero__excerpt">${escapeHtml(latest.summary)}</p>
           </div>
         </section>
 
@@ -874,14 +874,14 @@ export function renderEpisodePage(episode, episodes) {
                   ${renderEpisodePlatformLinks(episode)}
                 </div>
               </div>
-              <p class="latest-hero__excerpt">${renderMarkdownInline(episode.summary, {
-            buzzwords,
-            episodeNumberLookup
-        })}</p>
             </div>
             <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
               <img src="${escapeAttribute(assetPath(episode.image))}" alt="${escapeAttribute(`${guestName} on Impulse`)}" decoding="async" fetchpriority="high">
             </a>
+            <p class="latest-hero__excerpt">${renderMarkdownInline(episode.summary, {
+            buzzwords,
+            episodeNumberLookup
+        })}</p>
           </div>
         </section>
 

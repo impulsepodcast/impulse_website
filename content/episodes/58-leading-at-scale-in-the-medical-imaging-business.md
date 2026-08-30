@@ -17,6 +17,8 @@ links:
   youtube: https://www.youtube.com/watch?v=iyjXn7yoLwg
   amazon: https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/f6e5be40-5507-4ada-ad66-b810a6cf760b/impulse---meeting-healthcare-pioneers-58---leading-at-scale-in-the-medical-imaging-business---simon-rost---ge-healthcare
   rss: https://feeds.megaphone.fm/impulse
+
+previewAudio: "/static/audio/previews/58-leading-at-scale-in-the-medical-imaging-business.mp3"
 ---
 
 ## Episode notes

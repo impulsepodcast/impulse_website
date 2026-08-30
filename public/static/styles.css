@@ -337,12 +337,17 @@ code {
 
 .latest-hero__grid {
   display: grid;
+  grid-template-areas:
+    "content image"
+    "excerpt image";
   grid-template-columns: 1fr 0.95fr;
+  grid-template-rows: auto 1fr;
   gap: 2.5rem 3.25rem;
   align-items: start;
 }
 
 .latest-hero__content {
+  grid-area: content;
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -396,9 +401,19 @@ code {
 }
 
 .latest-hero__image img {
+  display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   object-fit: cover;
+}
+
+.latest-hero__image {
+  display: block;
+  grid-area: image;
+  align-self: stretch;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .audio-bar {
@@ -428,8 +443,10 @@ code {
 }
 
 .latest-hero__excerpt {
+  grid-area: excerpt;
+  align-self: end;
   max-width: 62ch;
-  margin: 2rem 0 0;
+  margin: 0;
   color: #555;
   font-size: 0.95rem;
   line-height: 1.6;
@@ -438,11 +455,11 @@ code {
 }
 
 .episode-notes {
-  padding: 0.75rem 0 3.5rem;
+  padding: 0.75rem 0 1.5rem;
 }
 
 .episode-notes__inner {
-  max-width: 860px;
+  width: 100%;
   margin: 0 auto;
   color: var(--muted);
   font-family: "ImpulseBody", "GothamLight", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1654,8 +1671,22 @@ footer{
   }
 
   .latest-hero__grid {
+    grid-template-areas:
+      "content"
+      "image"
+      "excerpt";
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
     gap: 1.75rem;
+  }
+
+  .latest-hero__image img {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .latest-hero__image {
+    height: auto;
   }
 
   .home-archive__grid {
@@ -2537,13 +2568,12 @@ footer{
 }
 
 .episode-transcript {
-  margin-top: 2rem;
+  padding: 0.75rem 0 1.5rem;
   border-top: 1px solid rgba(48, 76, 244, 0.14);
-  padding-top: 1.25rem;
 }
 
 .episode-transcript summary {
-  width: fit-content;
+  width: 100%;
   color: var(--blue);
   font-family: "GothamBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
@@ -2560,9 +2590,8 @@ footer{
   background: #fff;
 }
 
-.episode-transcript-section__inner {
-  max-width: 960px;
-}
+/*.episode-transcript-section__inner {
+}*/
 
 .episode-transcript-card {
   padding: clamp(1.4rem, 3vw, 2.4rem);
@@ -2570,6 +2599,7 @@ footer{
   border-radius: 24px;
   background: #fff;
   box-shadow: 0 18px 45px rgba(35, 57, 155, 0.08);
+  width: 100%;
 }
 
 .episode-transcript-card__heading {
@@ -2631,12 +2661,16 @@ footer{
   line-height: 1.72;
 }
 
+
 .episode-video {
-  padding: 0 0 3.5rem;
+  padding: 0.75rem 0 1.5rem;
 }
 
 .episode-video__inner {
-  max-width: 860px;
+  max-width: 100%;
+  border: 1px solid rgba(48, 76, 244, 0.14);
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 .episode-video__card {
@@ -2694,22 +2728,16 @@ footer{
   }
 
   .latest-hero__content {
-    grid-column: 1;
-    grid-row: 1;
     padding-bottom: 0;
-  }
-
-  .latest-hero__image {
-    grid-column: 2;
-    grid-row: 1;
   }
 
   .latest-hero__excerpt {
     display: -webkit-box;
     overflow: hidden;
     max-height: 7.7rem;
-    margin-top: auto;
-    padding-top: 2rem;
+    margin: 0;
+    padding-top: 0;
+    align-self: end;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
   }
