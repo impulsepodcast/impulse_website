@@ -44,6 +44,8 @@ function contentTypeForPath(pathname: string): string {
       return "application/javascript; charset=utf-8";
     case ".json":
       return "application/json; charset=utf-8";
+    case ".txt":
+      return "text/plain; charset=utf-8";
     case ".mp3":
       return "audio/mpeg";
     case ".wav":
@@ -170,10 +172,14 @@ async function serveStatic(
   response: ServerResponse<IncomingMessage>,
   pathname: string
 ) {
+  const generatedTarget = join(publicDir, pathname.replace(/^\/+/, ""));
+  const sourceTarget = join(publicDir, pathname.replace("/static/", ""));
   const target =
     pathname.startsWith("/static/client/")
       ? join(clientDir, pathname.replace("/static/client/", ""))
-      : join(publicDir, pathname.replace("/static/", ""));
+      : existsSync(generatedTarget)
+        ? generatedTarget
+        : sourceTarget;
 
   await serveFile(request, response, target);
 }

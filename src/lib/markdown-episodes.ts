@@ -286,6 +286,7 @@ export async function loadMarkdownEpisodes(markdownDirPath: string): Promise<Epi
 
   const projectRoot = resolve(markdownDirPath, "../..");
   const imageDirPath = join(projectRoot, "public", "images", "episodes");
+  const transcriptDirPath = join(projectRoot, "content", "transcripts");
   const imageFiles = await readdir(imageDirPath).catch(() => []);
   const availableImageFiles = new Set(imageFiles);
   const imageStemLookup = buildImageStemLookup(imageFiles);
@@ -305,6 +306,7 @@ export async function loadMarkdownEpisodes(markdownDirPath: string): Promise<Epi
       ]);
       const parsed = parseFrontmatter(markdownSource, filePath);
       const number = requiredNumber(parsed.frontmatter, "number", filePath);
+      const slug = markdownFilenameToSlug(fileName, number);
       const title = requiredString(parsed.frontmatter, "title", filePath);
       const guest = requiredString(parsed.frontmatter, "guest", filePath);
       const company = optionalString(parsed.frontmatter, "company");
@@ -322,11 +324,20 @@ export async function loadMarkdownEpisodes(markdownDirPath: string): Promise<Epi
       const tags = requiredArray(parsed.frontmatter, "tags", filePath);
       const previewAudio = optionalString(parsed.frontmatter, "previewAudio");
       const links = coerceLinks(parsed.frontmatter.links, filePath);
+      const transcript = await readFile(join(transcriptDirPath, `${slug}.txt`), "utf8")
+        .then((value) => value.trim())
+        .catch((error: NodeJS.ErrnoException) => {
+          if (error.code === "ENOENT") {
+            return undefined;
+          }
+
+          throw error;
+        });
 
       return {
         id: `episode-${number}`,
         number,
-        slug: markdownFilenameToSlug(fileName, number),
+        slug,
         title,
         guest,
         company,
@@ -337,6 +348,8 @@ export async function loadMarkdownEpisodes(markdownDirPath: string): Promise<Epi
         tags,
         links,
         previewAudio,
+        transcript,
+        transcriptDownload: transcript ? `/static/transcripts/${slug}.txt` : undefined,
         source: "markdown",
         createdAt: fileStats.birthtime.toISOString(),
         updatedAt: fileStats.mtime.toISOString()

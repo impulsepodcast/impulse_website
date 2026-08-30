@@ -8,6 +8,9 @@
     "compile": "npm run clean && tsc -p tsconfig.json",
     "build": "npm run compile && node dist/scripts/sync-episodes.js",
     "validate:episodes": "npm run compile && node dist/scripts/validate-episodes.js",
+    "transcripts:fetch": "./scripts/fetch-youtube-captions.sh",
+    "transcripts:import": "npm run compile && node dist/scripts/import-youtube-transcripts.js",
+    "r2:push": "npm run compile && node dist/scripts/push-r2.js",
     "package:deploy": "./deploy/package-deploy.sh",
     "start": "node dist/server.js"
   },
@@ -16,6 +19,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1121.0",
     "plyr": "^3.8.4"
   }
 }

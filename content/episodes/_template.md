@@ -22,6 +22,10 @@ previewAudio: "/static/audio/previews/59-episode-title-preview.mp3"
 
 Write the long-form show notes here.
 
+When a YouTube transcript is available, save its cleaned plain-text version as
+`content/transcripts/59-episode-title.txt`. The site will add it to this page
+automatically as a collapsible, downloadable transcript.
+
 - Add key takeaways as bullets.
 - Add links with markdown syntax like [Impulse](https://www.impulsepodcast.com).
 - Put the cover image file in `public/images/episodes/` first, then reference it with the `/static/...` path above.

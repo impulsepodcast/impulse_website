@@ -3,3 +3,8 @@ dist/
 .site-build/
 impulse-deploy.tgz
 .DS_Store
+.env
+.env.*
+!.env.example
+!.env.r2.example
+.transcript-work/

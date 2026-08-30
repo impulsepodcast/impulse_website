@@ -3,8 +3,9 @@ import {
   PLATFORM_ICON_PATHS,
   PLATFORM_LABELS,
   SITE,
-  SUPPORTS_PATHS,
+  SUPPORTERS,
   TESTIMONIALS,
+  assetPath,
   sitePath,
   siteUrlForPath
 } from "./site-config.js";
@@ -80,6 +81,23 @@ function displayCompanyName(episode: Episode): string | null {
   return null;
 }
 
+function episodeMixScore(episode: Episode): number {
+  let score = 2166136261;
+
+  for (const character of episode.slug) {
+    score ^= character.charCodeAt(0);
+    score = Math.imul(score, 16777619);
+  }
+
+  return score >>> 0;
+}
+
+export function selectMixedEpisodes(episodes: Episode[], count: number): Episode[] {
+  return [...episodes]
+    .sort((left, right) => episodeMixScore(left) - episodeMixScore(right))
+    .slice(0, count);
+}
+
 function renderPlatformIconLink(
   key: keyof typeof PLATFORM_ICON_PATHS,
   url: string,
@@ -92,7 +110,7 @@ function renderPlatformIconLink(
       url
     )}" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="${escapeAttribute(sitePath(PLATFORM_ICON_PATHS[key]))}" alt="${escapeAttribute(
+        <img src="${escapeAttribute(assetPath(PLATFORM_ICON_PATHS[key]))}" alt="${escapeAttribute(
       label
     )}" loading="lazy" decoding="async">
       </span>
@@ -120,7 +138,7 @@ function renderSitePlatformLinks(withText = false): string {
   return [
     renderPlatformIconLink("spotify", SITE.links.spotify, { withText, label: "Spotify" }),
     renderPlatformIconLink("apple", SITE.links.apple, { withText, label: "Apple" }),
-    renderPlatformIconLink("google", SITE.links.google, { withText, label: "Google" }),
+    renderPlatformIconLink("youtube", SITE.links.youtube, { withText, label: "YouTube" }),
     renderPlatformIconLink("amazon", SITE.links.amazon, { withText, label: "Amazon" })
   ].join("");
 }
@@ -220,17 +238,13 @@ function renderMarkdownInline(
   return highlighted.replace(/__ANCHOR_(\d+)__/g, (_match, index: string) => anchors[Number(index)] ?? "");
 }
 
-function renderEpisodeBody(
-  markdown: string | undefined,
+function renderMarkdownBlocks(
+  markdown: string,
   options?: {
     buzzwords?: string[];
     episodeNumberLookup?: Map<number, Episode>;
   }
 ): string {
-  if (!markdown?.trim()) {
-    return "";
-  }
-
   const lines = markdown.split(/\r?\n/);
   const blocks: string[] = [];
   let paragraph: string[] = [];
@@ -292,7 +306,31 @@ function renderEpisodeBody(
   flushParagraph();
   flushList();
 
-  if (blocks.length === 0) {
+  return blocks.join("");
+}
+
+function renderEpisodeBody(
+  markdown: string | undefined,
+  options?: {
+    buzzwords?: string[];
+    episodeNumberLookup?: Map<number, Episode>;
+  }
+): string {
+  if (!markdown?.trim()) {
+    return "";
+  }
+
+  const transcriptHeading = /^##\s+Transcript\s*$/im.exec(markdown);
+  const notesMarkdown = transcriptHeading?.index === undefined
+    ? markdown
+    : markdown.slice(0, transcriptHeading.index);
+  const transcriptMarkdown = transcriptHeading?.index === undefined
+    ? ""
+    : markdown.slice(transcriptHeading.index + transcriptHeading[0].length);
+  const notes = renderMarkdownBlocks(notesMarkdown, options);
+  const transcript = renderMarkdownBlocks(transcriptMarkdown, options);
+
+  if (!notes && !transcript) {
     return "";
   }
 
@@ -301,7 +339,17 @@ function renderEpisodeBody(
       <div class="container">
         <div class="episode-notes__inner">
           <div class="episode-notes__surface">
-            ${blocks.join("")}
+            ${notes}
+            ${
+              transcript
+                ? `
+                  <details class="episode-transcript">
+                    <summary>Read the full transcript</summary>
+                    <div class="episode-transcript__body">${transcript}</div>
+                  </details>
+                `
+                : ""
+            }
           </div>
         </div>
       </div>
@@ -309,15 +357,119 @@ function renderEpisodeBody(
   `;
 }
 
+function youtubeVideoId(url: string | undefined): string | null {
+  if (!url) {
+    return null;
+  }
+
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === "youtu.be") {
+      return parsed.pathname.split("/").filter(Boolean)[0] ?? null;
+    }
+
+    if (parsed.hostname.endsWith("youtube.com")) {
+      return (
+        parsed.searchParams.get("v") ??
+        parsed.pathname.match(/^\/(?:embed|shorts)\/([^/?#]+)/)?.[1] ??
+        null
+      );
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+function renderEpisodeVideo(episode: Episode): string {
+  const videoId = youtubeVideoId(episode.links.youtube);
+  if (!videoId || !episode.links.youtube) {
+    return "";
+  }
+
+  return `
+    <section class="episode-video">
+      <div class="container episode-video__inner">
+        <a class="episode-video__card" href="${escapeAttribute(
+          episode.links.youtube
+        )}" target="_blank" rel="noreferrer">
+          <img
+            src="https://i.ytimg.com/vi/${escapeAttribute(videoId)}/maxresdefault.jpg"
+            alt="Video preview for ${escapeAttribute(episode.title)}"
+            loading="lazy"
+            decoding="async"
+          >
+          <span class="episode-video__copy">
+            <span class="eyebrow">Watch the conversation</span>
+            <strong>${escapeHtml(episode.title)}</strong>
+            <span class="episode-video__action">Play on YouTube</span>
+          </span>
+        </a>
+      </div>
+    </section>
+  `;
+}
+
+function renderEpisodeTranscript(episode: Episode): string {
+  if (!episode.transcript?.trim() || !episode.transcriptDownload) {
+    return "";
+  }
+
+  const paragraphs = episode.transcript
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.replace(/\s*\n\s*/g, " ").trim())
+    .filter(Boolean)
+    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+    .join("");
+
+  return `
+    <section class="episode-transcript-section" aria-labelledby="episode-transcript-${episode.number}">
+      <div class="container episode-transcript-section__inner">
+        <div class="episode-transcript-card">
+          <div class="episode-transcript-card__heading">
+            <div>
+              <p class="eyebrow">Full conversation</p>
+              <h2 id="episode-transcript-${episode.number}">Episode transcript</h2>
+              <p>Generated from the YouTube captions and lightly cleaned for readability. Names and technical terms may contain transcription errors.</p>
+            </div>
+            <a class="episode-transcript-download" href="${escapeAttribute(
+              assetPath(episode.transcriptDownload)
+            )}" download="${escapeAttribute(`${episode.slug}-transcript.txt`)}">Download transcript (.txt)</a>
+          </div>
+          <details class="episode-transcript episode-transcript--standalone">
+            <summary>Read the full transcript</summary>
+            <div class="episode-transcript__body">${paragraphs}</div>
+          </details>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderCarouselControls(label: string): string {
+  return `
+    <div class="carousel-controls" aria-label="${escapeAttribute(label)}">
+      <button class="carousel-control" type="button" data-carousel-previous aria-label="Previous ${escapeAttribute(
+        label
+      )}">←</button>
+      <span class="carousel-status" data-carousel-status aria-live="polite">1 / 1</span>
+      <button class="carousel-control" type="button" data-carousel-next aria-label="Next ${escapeAttribute(
+        label
+      )}">→</button>
+    </div>
+  `;
+}
+
 function renderTestimonialsSection(): string {
   return `
-    <section class="testimonials-section">
+    <section class="testimonials-section" data-carousel>
       <div class="container">
         <div class="section-heading section-heading--stack testimonials-section__heading">
           <h2>Conversations that resonate across the healthcare ecosystem</h2>
           <p>Guests, operators, founders, and listeners who make the Impulse community what it is.</p>
         </div>
-        <div class="testimonials-grid">
+        <div class="testimonials-grid" role="region" aria-label="Listener reviews" tabindex="0" data-carousel-viewport>
           ${TESTIMONIALS.map(
             (testimonial) => `
               <article class="testimonial-card">
@@ -334,6 +486,7 @@ function renderTestimonialsSection(): string {
             `
           ).join("")}
         </div>
+        ${renderCarouselControls("reviews")}
       </div>
     </section>
   `;
@@ -382,7 +535,7 @@ function renderStickyPlayer(episode: Episode | null): string {
               data-sticky-player-audio
             >
               <source
-                src="${escapeAttribute(sitePath(episode.previewAudio))}"
+                src="${escapeAttribute(assetPath(episode.previewAudio))}"
                 type="audio/mpeg"
               >
             </audio>
@@ -449,7 +602,7 @@ function renderStickyPlayer(episode: Episode | null): string {
         <div class="sticky-player__episode">
           <img
             class="sticky-player__artwork"
-            src="${escapeAttribute(sitePath(artwork))}"
+            src="${escapeAttribute(assetPath(artwork))}"
             alt=""
           >
 
@@ -518,16 +671,6 @@ function renderStickyPlayer(episode: Episode | null): string {
 
         </div>
       </div>
-
-      ${
-        !episode.previewAudio
-          ? `
-            <div class="sticky-player__audio-unavailable">
-              Preview unavailable for this episode.
-            </div>
-          `
-          : ""
-      }
     </div>
   `;
 }
@@ -539,7 +682,7 @@ function renderHeader(path: string): string {
         <a class="brand brand--legacy" href="${escapeAttribute(sitePath("/"))}">
           <img
             class="brand-image"
-            src="${escapeAttribute(sitePath(SITE.assets.brandLogo))}"
+            src="${escapeAttribute(assetPath(SITE.assets.brandLogo))}"
             alt="Impulse Podcast"
           >
         </a>
@@ -559,6 +702,24 @@ function footerLink(url: string, label: string): string {
 }
 
 function renderFooter(): string {
+  const supporterLinks = (duplicate = false) =>
+    SUPPORTERS.map((supporter) => {
+      const className = `support-carousel__link${
+        duplicate ? " support-carousel__link--duplicate" : ""
+      }`;
+      const accessibilityAttributes = duplicate
+        ? 'aria-hidden="true" tabindex="-1"'
+        : `aria-label="Visit ${escapeAttribute(supporter.name)}"`;
+
+      return `<a class="${className}" href="${escapeAttribute(
+        supporter.url
+      )}" target="_blank" rel="noreferrer" ${accessibilityAttributes}><img src="${escapeAttribute(
+        assetPath(supporter.image)
+      )}" class="${supporter.compact ? "image-network" : "image-carrousel"}" alt="${
+        duplicate ? "" : escapeAttribute(supporter.name)
+      }" loading="lazy" decoding="async"></a>`;
+    }).join("\n");
+
   return `
     <footer class="site-footer">
       <section class="support-strip">
@@ -567,20 +728,8 @@ function renderFooter(): string {
 
           <div class="support-carousel">
             <div class="support-carousel__track">
-              <!-- Logos -->
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png1"]))}" class = "image-network" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png2"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png3"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png4"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png5"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="${escapeAttribute(sitePath(SUPPORTS_PATHS["png6"]))}" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              ${supporterLinks()}
+              ${supporterLinks(true)}
             </div>
           </div>
 
@@ -601,12 +750,12 @@ function renderFooter(): string {
         <div class="footer-brand">
           <img
             class="footer-brand-image"
-            src="${escapeAttribute(sitePath(SITE.assets.brandLogo))}"
+            src="${escapeAttribute(assetPath(SITE.assets.brandLogo))}"
             alt="Impulse Podcast"
           >
           <p>${escapeHtml(SITE.description)} ${escapeHtml(SITE.extendedDescription)}</p>
           <a class="support-badge" href="${SITE.links.healthPodcastNetwork}" target="_blank" rel="noreferrer">
-            <img src="${escapeAttribute(sitePath(SITE.assets.healthPodcastNetworkBadge))}" alt="Health Podcast Network" loading="lazy" decoding="async">
+            <img src="${escapeAttribute(assetPath(SITE.assets.healthPodcastNetworkBadge))}" alt="Health Podcast Network" loading="lazy" decoding="async">
           </a>
         </div>
         <div class="footer-columns">
@@ -621,7 +770,7 @@ function renderFooter(): string {
             <div class="footer-links">
               ${footerLink(SITE.links.spotify, "Spotify")}
               ${footerLink(SITE.links.apple, "Apple Podcasts")}
-              ${footerLink(SITE.links.google, "Google Podcasts")}
+              ${footerLink(SITE.links.youtube, "YouTube")}
               ${footerLink(SITE.links.amazon, "Amazon")}
             </div>
           </div>
@@ -685,7 +834,7 @@ function renderEpisodeCard(episode: Episode): string {
       episode.tags.join(",")
     )}" data-search="${escapeAttribute(`${episode.title} ${guestName} ${episode.summary}`.toLowerCase())}">
       <a class="episode-card__image" href="${escapeAttribute(episodePath)}">
-        <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(
+        <img src="${escapeAttribute(assetPath(episode.image))}" alt="${escapeAttribute(
       `${guestName} on Impulse`
     )}" loading="lazy" decoding="async">
       </a>
@@ -707,9 +856,13 @@ function renderEpisodeCard(episode: Episode): string {
 
 function renderBasePage(options: PageOptions): string {
   const description = options.description ?? SITE.description;
-  const scriptSet = new Set<string>([sitePath("/static/client/player.js"), ...(options.scripts ?? []).map(sitePath)]);
+  const scriptSet = new Set<string>([
+    sitePath("/static/client/player.js"),
+    sitePath("/static/client/carousels.js"),
+    ...(options.scripts ?? []).map(sitePath)
+  ]);
 
-  return `<!doctype html>
+  const html = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -736,11 +889,13 @@ function renderBasePage(options: PageOptions): string {
       .join("")}
   </body>
 </html>`;
+
+  return html.replace(/[ \t]+$/gm, "");
 }
 
 export function renderHomePage(episodes: Episode[], tags: string[]): string {
   const latest = episodes[0];
-  const featured = episodes.slice(1, 5);
+  const featured = selectMixedEpisodes(episodes.slice(1), 12);
   const latestGuest = displayGuestName(latest);
   const latestCompany = displayCompanyName(latest);
   const stickyPlayerEpisode = episodes.find((episode) => Boolean(episode.previewAudio)) ?? latest;
@@ -758,7 +913,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
               <div class="brand-hero__copy">
                 <div class="brand-hero__statement">
                   <div class="brand-hero__wave">
-                    <img src="${escapeAttribute(sitePath(SITE.assets.wave))}" aria-hidden="true" class="heartbeat-svg" decoding="async" fetchpriority="high">
+                    <img src="${escapeAttribute(assetPath(SITE.assets.wave))}" aria-hidden="true" class="heartbeat-svg" decoding="async" fetchpriority="high">
                   </div>
                 </div>
                 <div class="brand-hero__socials">
@@ -766,7 +921,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
                     <p class="brand-hero__label">Follow the podcast:</p>
                     <a class="platform-link" href="${SITE.links.brandLinkedIn}" target="_blank" rel="noreferrer">
                       <span class="platform-icon">
-                        <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="LinkedIn" decoding="async">
+                        <img src="${escapeAttribute(assetPath(SITE.assets.linkedInIcon))}" alt="LinkedIn" decoding="async">
                       </span>
                     </a>
                   </div>
@@ -802,37 +957,36 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
                   ${renderEpisodePlatformLinks(latest)}
                 </div>
               </div>
+              <p class="latest-hero__excerpt">${escapeHtml(latest.summary)}</p>
             </div>
             <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${latest.slug}`))}">
-              <img src="${escapeAttribute(sitePath(latest.image))}" alt="${escapeAttribute(
+              <img src="${escapeAttribute(assetPath(latest.image))}" alt="${escapeAttribute(
       `${latestGuest} on Impulse`
     )}" decoding="async" fetchpriority="high">
             </a>
-            <div class="latest-hero__player">
-              <p class="latest-hero__excerpt">${escapeHtml(latest.summary)}</p>
-            </div>
           </div>
         </section>
 
-        <section class="home-archive">
+        <section class="home-archive" data-carousel data-carousel-autoplay="5200">
           <div class="container">
             <h2 class="home-archive__heading">Discover Other Episodes</h2>
-            <div class="home-archive__grid">
+            <div class="home-archive__grid" role="region" aria-label="Featured episodes" tabindex="0" data-carousel-viewport>
               ${featured
                 .map(
                   (episode) => `
                     <a class="home-archive__card" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
-                      <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(
+                      <img src="${escapeAttribute(assetPath(episode.image))}" alt="${escapeAttribute(
                         `${displayGuestName(episode)} on Impulse`
                       )}" loading="lazy" decoding="async">
                     </a>
                   `
                 )
                 .join("")}
-              <a class="home-archive__more" href="${escapeAttribute(sitePath("/episodes"))}">
-                <span>View all episodes</span>
-              </a>
             </div>
+            ${renderCarouselControls("featured episodes")}
+            <a class="home-archive__more" href="${escapeAttribute(sitePath("/episodes"))}">
+              <span>View all episodes</span>
+            </a>
           </div>
         </section>
         ${renderTestimonialsSection()}
@@ -853,13 +1007,13 @@ export function renderEpisodesPage(episodes: Episode[], tags: string[]): string 
     stickyPlayerEpisode,
     body: `
       <main>
-        <section class="page-hero page-hero--legacy">
+        <section class="page-hero page-hero--legacy page-hero--episodes">
           <div class="container section-heading section-heading--stack section-heading--legacy">
             <h1>Find conversations by topic, company, or guest!</h1>
           </div>
         </section>
 
-        <section class="legacy-section">
+        <section class="legacy-section legacy-section--episodes">
           <div class="container filters-panel">
             <form id="episode-search-form" class="search-field" role="search">
               <span>Search episodes</span>
@@ -901,7 +1055,10 @@ export function renderEpisodesPage(episodes: Episode[], tags: string[]): string 
 export function renderEpisodePage(episode: Episode, episodes: Episode[]): string {
   const guestName = displayGuestName(episode);
   const companyName = displayCompanyName(episode);
-  const relatedEpisodes = episodes.filter((entry) => entry.slug !== episode.slug).slice(0, 4);
+  const relatedEpisodes = selectMixedEpisodes(
+    episodes.filter((entry) => entry.slug !== episode.slug),
+    8
+  );
   const stickyPlayerEpisode =
     episode.previewAudio ? episode : (episodes.find((entry) => Boolean(entry.previewAudio)) ?? episode);
   const episodeNumberLookup = buildEpisodeNumberLookup(episodes);
@@ -934,43 +1091,45 @@ export function renderEpisodePage(episode: Episode, episodes: Episode[]): string
                   ${renderEpisodePlatformLinks(episode)}
                 </div>
               </div>
-            </div>
-            <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
-              <img src="${escapeAttribute(sitePath(episode.image))}" alt="${escapeAttribute(
-      `${guestName} on Impulse`
-    )}" decoding="async" fetchpriority="high">
-            </a>
-            <div class="latest-hero__player">
               <p class="latest-hero__excerpt">${renderMarkdownInline(episode.summary, {
                 buzzwords,
                 episodeNumberLookup
               })}</p>
             </div>
+            <a class="latest-hero__image" href="${escapeAttribute(sitePath(`/episodes/${episode.slug}`))}">
+              <img src="${escapeAttribute(assetPath(episode.image))}" alt="${escapeAttribute(
+      `${guestName} on Impulse`
+    )}" decoding="async" fetchpriority="high">
+            </a>
           </div>
         </section>
 
-        <section class="home-archive home-archive--detail">
+        ${renderEpisodeBody(episode.body, { buzzwords, episodeNumberLookup })}
+        ${renderEpisodeVideo(episode)}
+        ${renderEpisodeTranscript(episode)}
+
+        <section class="home-archive home-archive--detail" data-carousel>
           <div class="container">
             <h2 class="home-archive__heading">Discover Other Episodes</h2>
-            <div class="home-archive__grid">
+            <div class="home-archive__grid" role="region" aria-label="Related episodes" tabindex="0" data-carousel-viewport>
               ${relatedEpisodes
                 .map(
                   (relatedEpisode) => `
                     <a class="home-archive__card" href="${escapeAttribute(sitePath(`/episodes/${relatedEpisode.slug}`))}">
-                      <img src="${escapeAttribute(sitePath(relatedEpisode.image))}" alt="${escapeAttribute(
+                      <img src="${escapeAttribute(assetPath(relatedEpisode.image))}" alt="${escapeAttribute(
                         `${displayGuestName(relatedEpisode)} on Impulse`
                       )}" loading="lazy" decoding="async">
                     </a>
                   `
                 )
                 .join("")}
-              <a class="home-archive__more" href="${escapeAttribute(sitePath("/episodes"))}">
-                <span>View all episodes</span>
-              </a>
             </div>
+            ${renderCarouselControls("related episodes")}
+            <a class="home-archive__more" href="${escapeAttribute(sitePath("/episodes"))}">
+              <span>View all episodes</span>
+            </a>
           </div>
         </section>
-        ${renderEpisodeBody(episode.body, { buzzwords, episodeNumberLookup })}
       </main>
     `
   });
@@ -986,10 +1145,10 @@ export function renderAboutPage(episodes: Episode[]): string {
     stickyPlayerEpisode,
     body: `
       <main>
-        <section class="page-hero page-hero--legacy">
+        <section class="page-hero page-hero--legacy page-hero--about">
           <div class="container about-grid about-grid--legacy">
             <div class="about-photo">
-              <img src="${escapeAttribute(sitePath(SITE.hostPhoto))}" alt="${escapeAttribute(
+              <img src="${escapeAttribute(assetPath(SITE.hostPhoto))}" alt="${escapeAttribute(
       SITE.ownerName
     )}" decoding="async">
             </div>
@@ -1000,26 +1159,15 @@ export function renderAboutPage(episodes: Episode[]): string {
               <div class="about-contact">
                 <p class="about-contact__label">Reach out by email or connect on LinkedIn.</p>
                 <div class="about-contact__actions">
-                  <a class="button button--ghost about-contact__button" href="${SITE.links.contactEmail}">
-                    <span class="about-contact__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" focusable="false">
-                        <path
-                          d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25zm1.8-.25 7.2 5.4 7.2-5.4zm14.7 1-6.9 5.18a1 1 0 0 1-1.2 0L4.5 7.5v9.75c0 .14.11.25.25.25h14.5a.25.25 0 0 0 .25-.25z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
+                  <a class="button button--blue about-contact__button" href="${SITE.links.contactEmail}">
                     <span>Reach out by email</span>
                   </a>
                   <a
-                    class="button button--ghost about-contact__button"
+                    class="button button--blue about-contact__button"
                     href="${SITE.links.personalLinkedIn}"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span class="about-contact__icon" aria-hidden="true">
-                      <img src="${escapeAttribute(sitePath(SITE.assets.linkedInIcon))}" alt="" loading="lazy" decoding="async">
-                    </span>
                     <span>Connect on LinkedIn</span>
                   </a>
                 </div>
@@ -1028,21 +1176,6 @@ export function renderAboutPage(episodes: Episode[]): string {
           </div>
         </section>
 
-        <section class="legacy-section">
-          <div class="container spotlight-grid">
-            <div class="spotlight-card spotlight-card--white">
-              <p class="eyebrow">What Impulse covers</p>
-              <h2>Conversations with people pushing healthcare forward</h2>
-              <p>${escapeHtml(SITE.description)} ${escapeHtml(SITE.extendedDescription)}</p>
-            </div>
-            <div class="spotlight-card spotlight-card--white">
-              <p class="eyebrow">Current archive</p>
-              <h2>${episodes.length} episodes and growing</h2>
-              <p>New episodes now ship from markdown files, which keeps publishing lightweight while preserving the visual language of the original site.</p>
-              <a class="inline-link" href="${escapeAttribute(sitePath("/episodes"))}">Explore the archive</a>
-            </div>
-          </div>
-        </section>
         ${renderTestimonialsSection()}
         ${renderCollaborationSection()}
       </main>

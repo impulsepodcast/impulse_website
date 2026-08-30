@@ -31,6 +31,8 @@ export interface Episode {
   tags: string[];
   links: EpisodeLinks;
   previewAudio?: string;
+  transcript?: string;
+  transcriptDownload?: string;
   source: EpisodeSource;
   createdAt: string;
   updatedAt: string;

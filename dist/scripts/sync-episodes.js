@@ -2,7 +2,7 @@ import { copyFile, cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import { syncEpisodeCatalog } from "../lib/catalog.js";
-import { renderAboutPage, renderEpisodePage, renderEpisodesPage, renderHomePage, renderNotFoundPage } from "../lib/templates.js";
+import { renderAboutPage, renderEpisodePage, renderEpisodesPage, renderHomePage, renderNotFoundPage, selectMixedEpisodes } from "../lib/templates.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, "../..");
@@ -34,6 +34,10 @@ function buildTags(episodes) {
     }
     return [...tags].sort((left, right) => left.localeCompare(right));
 }
+function toPublicEpisode(episode) {
+    const { transcript: _transcript, ...publicEpisode } = episode;
+    return publicEpisode;
+}
 async function removeGeneratedPublicFiles(publicPath) {
     await Promise.all([
         rm(join(publicPath, "about"), { recursive: true, force: true }),
@@ -57,6 +61,7 @@ async function main() {
         markdownEpisodesDir: join(projectRoot, "content", "episodes")
     });
     const episodes = syncedEpisodes;
+    const publicEpisodes = episodes.map(toPublicEpisode);
     const tags = buildTags(episodes);
     await removeGeneratedPublicFiles(outputPublicPath);
     await Promise.all([
@@ -66,8 +71,8 @@ async function main() {
         }),
         writeTextFile(join(outputPublicPath, "index.html"), renderHomePage(episodes, tags)),
         writeJsonFile(join(outputPublicPath, "index.json"), {
-            latestEpisode: episodes[0] ?? null,
-            featuredEpisodes: episodes.slice(1, 5),
+            latestEpisode: publicEpisodes[0] ?? null,
+            featuredEpisodes: selectMixedEpisodes(publicEpisodes.slice(1), 12),
             tags
         }),
         writeTextFile(join(outputPublicPath, "about", "index.html"), renderAboutPage(episodes)),
@@ -76,7 +81,7 @@ async function main() {
         }),
         writeTextFile(join(outputPublicPath, "episodes", "index.html"), renderEpisodesPage(episodes, tags)),
         writeJsonFile(join(outputPublicPath, "episodes", "index.json"), {
-            episodes,
+            episodes: publicEpisodes,
             tags
         }),
         writeTextFile(join(outputPublicPath, "404", "index.html"), notFoundHtml),
@@ -85,19 +90,21 @@ async function main() {
         copyClientBundleFile(join(sourcePublicPath, "styles.css"), join(outputPublicPath, "static", "styles.css")),
         copyDirectoryContents(join(sourcePublicPath, "images"), join(outputPublicPath, "static", "images")),
         copyDirectoryContents(join(sourcePublicPath, "audio"), join(outputPublicPath, "static", "audio")),
+        copyDirectoryContents(join(projectRoot, "content", "transcripts"), join(outputPublicPath, "static", "transcripts")),
         copyDirectoryContents(join(sourcePublicPath, "vendor"), join(outputPublicPath, "static", "vendor")),
         copyClientBundleFile(join(projectRoot, "dist", "client", "player.js"), join(clientPublicPath, "player.js")),
         copyClientBundleFile(join(projectRoot, "dist", "client", "episodes.js"), join(clientPublicPath, "episodes.js")),
-        writeJsonFile(join(outputPublicPath, "data", "episodes.json"), episodes),
+        copyClientBundleFile(join(projectRoot, "dist", "client", "carousels.js"), join(clientPublicPath, "carousels.js")),
+        writeJsonFile(join(outputPublicPath, "data", "episodes.json"), publicEpisodes),
         writeJsonFile(join(outputPublicPath, "data", "tags.json"), tags)
     ]);
     await Promise.all(episodes.map(async (episode) => {
-        const relatedEpisodes = episodes.filter((entry) => entry.slug !== episode.slug).slice(0, 4);
+        const relatedEpisodes = selectMixedEpisodes(episodes.filter((entry) => entry.slug !== episode.slug), 8);
         await Promise.all([
             writeTextFile(join(outputPublicPath, "episodes", episode.slug, "index.html"), renderEpisodePage(episode, episodes)),
             writeJsonFile(join(outputPublicPath, "episodes", episode.slug, "index.json"), {
-                episode,
-                relatedEpisodes
+                episode: toPublicEpisode(episode),
+                relatedEpisodes: relatedEpisodes.map(toPublicEpisode)
             })
         ]);
     }));

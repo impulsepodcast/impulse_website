@@ -17,6 +17,9 @@ async function main() {
             const localAssetPath = join(projectRoot, "public", episode.previewAudio.replace("/static/", ""));
             await access(localAssetPath);
         }
+        if (episode.links.youtube && (!episode.transcript || !episode.transcriptDownload)) {
+            throw new Error(`Episode ${episode.number} has a YouTube link but no downloadable transcript.`);
+        }
     }
     console.log(`Validated ${markdownEpisodes.length} markdown episode file(s).`);
 }

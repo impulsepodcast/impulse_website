@@ -23,6 +23,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/f6e5be40-5507-4ada-ad66-b810a6cf760b/impulse---meeting-healthcare-pioneers-58---leading-at-scale-in-the-medical-imaging-business---simon-rost---ge-healthcare",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/58-leading-at-scale-in-the-medical-imaging-business.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.294Z",
     "updatedAt": "2026-08-16T18:35:09.269Z"
@@ -51,6 +52,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/8b395723-4177-4447-b450-11f99294d89d/impulse---meeting-healthcare-pioneers-57---reimagining-care-for-metabolic-disorders---ihsan-almarzooqi---meta-bolic",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/57-reimagining-care-for-metabolic-disorders.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.293Z",
     "updatedAt": "2026-08-16T18:35:08.761Z"
@@ -79,6 +81,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/0ff09c56-dc8e-47ca-bd1a-84da499a4dcd/impulse---meeting-healthcare-pioneers-56---building-the-one-clinical-ai-assistant---ali-parsa---quadrivia",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/56-building-the-one-clinical-ai-assistant.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.293Z",
     "updatedAt": "2026-08-16T18:35:08.535Z"
@@ -107,6 +110,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/33a93b56-09b1-43cc-b679-9382a09bf3b3/impulse---meeting-healthcare-pioneers-55---reinventing-organ-transportation---lisa-anderson---paragonix-technologies",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/55-reinventing-organ-transportation.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.293Z",
     "updatedAt": "2026-08-16T18:35:08.393Z"
@@ -135,6 +139,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/9408c842-bf78-4995-8048-5806dc5712a9/impulse---meeting-healthcare-pioneers-54---making-the-smartphone-a-psychiatrist---hannes-kl%C3%B6pper---hellobetter",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/54-making-the-smartphone-a-psychiatrist.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.293Z",
     "updatedAt": "2026-08-16T18:35:08.161Z"
@@ -163,6 +168,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/642f0292-4dc0-4c78-8250-934ddde9bf4d/impulse---meeting-healthcare-pioneers-53---engineering-living-tissue-therapeutics---simon-mackenzie---cellbricks-therapeutics",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/53-engineering-living-tissue-therapeutics.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.292Z",
     "updatedAt": "2026-08-16T18:35:07.977Z"
@@ -191,6 +197,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/697f31c3-0732-4d13-9ac5-066bfe79c0c8/impulse---meeting-healthcare-pioneers-52---sensing-hydration-through-the-skin---mark-kendall---wearoptimo",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/52-sensing-hydration-through-the-skin.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.292Z",
     "updatedAt": "2026-08-16T18:35:07.828Z"
@@ -219,6 +226,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/3865134b-5fc5-4a17-b7c4-187b2ff81cfd/impulse---meeting-healthcare-pioneers-51---bridging-web3-and-healthcare---anca-petre---tech-anatomy",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/51-bridging-web3-and-healthcare.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.292Z",
     "updatedAt": "2026-08-16T18:35:07.661Z"
@@ -247,6 +255,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/552ed265-f483-4528-81e6-8f111048c0c8/impulse---meeting-healthcare-pioneers-50---scaling-drug-discovery-with-quantum-physics-and-ai---maximilien-levesque---aqemia",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/50-scaling-drug-discovery-with-quantum-physics-and-ai.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.292Z",
     "updatedAt": "2026-08-16T18:35:07.436Z"
@@ -275,6 +284,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/edf79d13-dafe-4815-a0a2-051a76b41c34/impulse---meeting-healthcare-pioneers-49---reverse-engineering-cancer-survival---nicolas-wolikow---cure51",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/49-reverse-engineering-cancer-survival.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.291Z",
     "updatedAt": "2026-08-16T18:35:07.260Z"
@@ -303,6 +313,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/982ef013-c6c7-4cc3-9e31-b988ca6db067/impulse---meeting-healthcare-pioneers-48---driving-precision-medicine-with-real-world-data---blythe-adamson---flatiron-health",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/48-driving-precision-medicine-with-real-world-data.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.291Z",
     "updatedAt": "2026-08-16T18:35:07.076Z"
@@ -331,6 +342,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/7b7dbf98-ac6f-4406-8af8-58949dbff126/impulse---meeting-healthcare-pioneers-47---pushing-responsible-ai-in-health---dr-ricardo-baptista-leite---healthai",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/47-pushing-responsible-ai-in-health.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.291Z",
     "updatedAt": "2026-08-16T18:35:06.976Z"
@@ -359,6 +371,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/51f7ff41-ca35-487b-8c31-b7423a72bb21/impulse---meeting-healthcare-pioneers-46---rethinking-the-stethoscope-and-its-use---diana-van-stijn---lapsi-health",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/46-rethinking-the-stethoscope-and-its-use.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.291Z",
     "updatedAt": "2026-08-16T18:35:06.878Z"
@@ -387,6 +400,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/3eacd74a-2ab7-40af-86a2-eda5e4eba82e/impulse---meeting-healthcare-pioneers-45---measuring-oxygen-with-a-smart-earring---shavini-fernando---oxiwear",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/45-measuring-oxygen-with-a-smart-earring.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.290Z",
     "updatedAt": "2026-08-16T18:35:06.710Z"
@@ -874,6 +888,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/92633e9f-7e8d-4884-b5cd-08a41e58524a/impulse---meeting-healthcare-pioneers-27---reinventing-neuroelectronic-therapies---carolina-aguilar---inbrain-neuroelectronics",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/27-reinventing-neuroelectronic-therapies.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.285Z",
     "updatedAt": "2026-08-16T18:35:03.627Z"
@@ -956,6 +971,7 @@
       "amazon": "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/a0231004-1f2f-47c0-9513-0e3da5f08d9e/impulse---meeting-healthcare-pioneers-24---reimagining-male-contraception---l-r-fox---next-life-sciences",
       "rss": "https://feeds.megaphone.fm/impulse"
     },
+    "transcriptDownload": "/static/transcripts/24-reimagining-male-contraception.txt",
     "source": "markdown",
     "createdAt": "2026-08-16T18:01:35.284Z",
     "updatedAt": "2026-08-16T18:35:03.101Z"

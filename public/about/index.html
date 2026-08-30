@@ -16,13 +16,13 @@
   <body>
     <div class="page-bg page-bg--top"></div>
     <div class="page-bg page-bg--side"></div>
-    
+
     <header class="site-header">
       <div class="container shell shell--legacy">
         <a class="brand brand--legacy" href="/">
           <img
             class="brand-image"
-            src="/static/images/site/brand-logo.png"
+            src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/site/brand-logo.png"
             alt="Impulse Podcast"
           >
         </a>
@@ -34,13 +34,13 @@
         <a class="button button--primary header-subscribe" href="https://linktr.ee/impulse.podcast" target="_blank" rel="noreferrer">Subscribe!</a>
       </div>
     </header>
-  
-    
+
+
       <main>
-        <section class="page-hero page-hero--legacy">
+        <section class="page-hero page-hero--legacy page-hero--about">
           <div class="container about-grid about-grid--legacy">
             <div class="about-photo">
-              <img src="/static/images/site/host-photo.jpg" alt="Mathieu Chaffard" decoding="async">
+              <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/site/host-photo.jpg" alt="Mathieu Chaffard" decoding="async">
             </div>
             <div class="about-copy">
               <h1 class = "about_name">Mathieu Chaffard</h1>
@@ -49,26 +49,15 @@
               <div class="about-contact">
                 <p class="about-contact__label">Reach out by email or connect on LinkedIn.</p>
                 <div class="about-contact__actions">
-                  <a class="button button--ghost about-contact__button" href="mailto:mathieu@impulsepodcast.com">
-                    <span class="about-contact__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" focusable="false">
-                        <path
-                          d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25zm1.8-.25 7.2 5.4 7.2-5.4zm14.7 1-6.9 5.18a1 1 0 0 1-1.2 0L4.5 7.5v9.75c0 .14.11.25.25.25h14.5a.25.25 0 0 0 .25-.25z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
+                  <a class="button button--blue about-contact__button" href="mailto:mathieu@impulsepodcast.com">
                     <span>Reach out by email</span>
                   </a>
                   <a
-                    class="button button--ghost about-contact__button"
+                    class="button button--blue about-contact__button"
                     href="https://www.linkedin.com/in/mathieu-chaffard/"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span class="about-contact__icon" aria-hidden="true">
-                      <img src="/static/images/site/linkedin.png" alt="" loading="lazy" decoding="async">
-                    </span>
                     <span>Connect on LinkedIn</span>
                   </a>
                 </div>
@@ -77,30 +66,15 @@
           </div>
         </section>
 
-        <section class="legacy-section">
-          <div class="container spotlight-grid">
-            <div class="spotlight-card spotlight-card--white">
-              <p class="eyebrow">What Impulse covers</p>
-              <h2>Conversations with people pushing healthcare forward</h2>
-              <p>Impulse is the podcast where we dive into the most exciting breakthroughs in healthcare of our time. In each episode, we sit down with some of the brightest minds who are using technology to rethink the way we care.</p>
-            </div>
-            <div class="spotlight-card spotlight-card--white">
-              <p class="eyebrow">Current archive</p>
-              <h2>58 episodes and growing</h2>
-              <p>New episodes now ship from markdown files, which keeps publishing lightweight while preserving the visual language of the original site.</p>
-              <a class="inline-link" href="/episodes">Explore the archive</a>
-            </div>
-          </div>
-        </section>
-        
-    <section class="testimonials-section">
+
+    <section class="testimonials-section" data-carousel>
       <div class="container">
         <div class="section-heading section-heading--stack testimonials-section__heading">
           <h2>Conversations that resonate across the healthcare ecosystem</h2>
           <p>Guests, operators, founders, and listeners who make the Impulse community what it is.</p>
         </div>
-        <div class="testimonials-grid">
-          
+        <div class="testimonials-grid" role="region" aria-label="Listener reviews" tabindex="0" data-carousel-viewport>
+
               <article class="testimonial-card">
                 <div class="testimonial-card__body">
                   <p class="testimonial-card__rating">★★★★★</p>
@@ -112,7 +86,7 @@
                   </p>
                 </div>
               </article>
-            
+
               <article class="testimonial-card">
                 <div class="testimonial-card__body">
                   <p class="testimonial-card__rating">★★★★★</p>
@@ -124,7 +98,7 @@
                   </p>
                 </div>
               </article>
-            
+
               <article class="testimonial-card">
                 <div class="testimonial-card__body">
                   <p class="testimonial-card__rating">★★★★★</p>
@@ -136,7 +110,7 @@
                   </p>
                 </div>
               </article>
-            
+
               <article class="testimonial-card">
                 <div class="testimonial-card__body">
                   <p class="testimonial-card__rating">★★★★★</p>
@@ -148,7 +122,7 @@
                   </p>
                 </div>
               </article>
-            
+
               <article class="testimonial-card">
                 <div class="testimonial-card__body">
                   <p class="testimonial-card__rating">★★★★★</p>
@@ -160,12 +134,19 @@
                   </p>
                 </div>
               </article>
-            
+
         </div>
+
+    <div class="carousel-controls" aria-label="reviews">
+      <button class="carousel-control" type="button" data-carousel-previous aria-label="Previous reviews">←</button>
+      <span class="carousel-status" data-carousel-status aria-live="polite">1 / 1</span>
+      <button class="carousel-control" type="button" data-carousel-next aria-label="Next reviews">→</button>
+    </div>
+
       </div>
     </section>
-  
-        
+
+
     <section class="collaboration-strip">
       <div class="container collaboration-strip__inner">
         <div class="collaboration-strip__copy">
@@ -176,12 +157,12 @@
         <a class="button button--primary collaboration-strip__button" href="mailto:mathieu@impulsepodcast.com">Let’s get in touch</a>
       </div>
     </section>
-  
+
       </main>
-    
-    
+
+
     <div class="sticky-player" data-sticky-player data-sticky-player-url="/episodes/58-leading-at-scale-in-the-medical-imaging-business">
-      
+
 
       <div class="sticky-player__progress">
         <div
@@ -242,7 +223,7 @@
         <div class="sticky-player__episode">
           <img
             class="sticky-player__artwork"
-            src="/static/images/episodes/58-leading-at-scale-in-the-medical-imaging-business.webp"
+            src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/episodes/58-leading-at-scale-in-the-medical-imaging-business.webp"
             alt=""
           >
 
@@ -253,35 +234,35 @@
 
             <div class="sticky-player__meta-row">
               <div class="sticky-player__platforms">
-                
+
     <a class="platform-link" href="https://open.spotify.com/episode/0gqHRlNKvrc3OOue6wxjxi?si=pBq__ryUSE2IKdAObT-5_w" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/spotify.png" alt="Spotify" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/spotify.png" alt="Spotify" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
+
     <a class="platform-link" href="https://podcasts.apple.com/us/podcast/58-leading-at-scale-in-the-medical-imaging-business/id1608213336?i=1000771144240" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/apple-podcasts.png" alt="Apple Podcasts" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/apple-podcasts.png" alt="Apple Podcasts" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
+
     <a class="platform-link" href="https://www.youtube.com/watch?v=iyjXn7yoLwg" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/youtube.png" alt="YouTube" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/youtube.png" alt="YouTube" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
+
     <a class="platform-link" href="https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/episodes/f6e5be40-5507-4ada-ad66-b810a6cf760b/impulse---meeting-healthcare-pioneers-58---leading-at-scale-in-the-medical-imaging-business---simon-rost---ge-healthcare" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/amazon-music.png" alt="Amazon Music" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/amazon-music.png" alt="Amazon Music" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
+
               </div>
 
               <span class="sticky-player__separator" aria-hidden="true"></span>
@@ -335,15 +316,9 @@
 
         </div>
       </div>
-
-      
-            <div class="sticky-player__audio-unavailable">
-              Preview unavailable for this episode.
-            </div>
-          
     </div>
-  
-    
+
+
     <footer class="site-footer">
       <section class="support-strip">
         <div class="container support-strip__inner">
@@ -351,20 +326,18 @@
 
           <div class="support-carousel">
             <div class="support-carousel__track">
-              <!-- Logos -->
-              <img src="/static/images/supports/health-podcast-network.png" class = "image-network" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/Health.Tech-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/HLTH_Europe-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/MedTech_World-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/Robert_Wood_Johnson-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/Vanderbilt_University-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-
-              <img src="/static/images/supports/health-podcast-network.png" class = "image-network" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/Health.Tech-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/HLTH_Europe-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/MedTech_World-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/Robert_Wood_Johnson-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
-              <img src="/static/images/supports/Vanderbilt_University-01.png" class = "image-carrousel" alt="" loading="lazy" decoding="async">
+              <a class="support-carousel__link" href="https://healthpodcastnetwork.com/show/impulse/" target="_blank" rel="noreferrer" aria-label="Visit Health Podcast Network"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/health-podcast-network.png" class="image-network" alt="Health Podcast Network" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link" href="https://www.health.tech/" target="_blank" rel="noreferrer" aria-label="Visit health.tech"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/Health.Tech-01.png" class="image-carrousel" alt="health.tech" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link" href="https://europe.hlth.com/" target="_blank" rel="noreferrer" aria-label="Visit HLTH Europe"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/HLTH_Europe-01.png" class="image-carrousel" alt="HLTH Europe" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link" href="https://med-tech.world/" target="_blank" rel="noreferrer" aria-label="Visit MedTech World"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/MedTech_World-01.png" class="image-carrousel" alt="MedTech World" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link" href="https://www.rwjf.org/" target="_blank" rel="noreferrer" aria-label="Visit Robert Wood Johnson Foundation"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/Robert_Wood_Johnson-01.png" class="image-carrousel" alt="Robert Wood Johnson Foundation" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link" href="https://www.vanderbilt.edu/" target="_blank" rel="noreferrer" aria-label="Visit Vanderbilt University"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/Vanderbilt_University-01.png" class="image-carrousel" alt="Vanderbilt University" loading="lazy" decoding="async"></a>
+              <a class="support-carousel__link support-carousel__link--duplicate" href="https://healthpodcastnetwork.com/show/impulse/" target="_blank" rel="noreferrer" aria-hidden="true" tabindex="-1"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/health-podcast-network.png" class="image-network" alt="" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link support-carousel__link--duplicate" href="https://www.health.tech/" target="_blank" rel="noreferrer" aria-hidden="true" tabindex="-1"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/Health.Tech-01.png" class="image-carrousel" alt="" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link support-carousel__link--duplicate" href="https://europe.hlth.com/" target="_blank" rel="noreferrer" aria-hidden="true" tabindex="-1"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/HLTH_Europe-01.png" class="image-carrousel" alt="" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link support-carousel__link--duplicate" href="https://med-tech.world/" target="_blank" rel="noreferrer" aria-hidden="true" tabindex="-1"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/MedTech_World-01.png" class="image-carrousel" alt="" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link support-carousel__link--duplicate" href="https://www.rwjf.org/" target="_blank" rel="noreferrer" aria-hidden="true" tabindex="-1"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/Robert_Wood_Johnson-01.png" class="image-carrousel" alt="" loading="lazy" decoding="async"></a>
+<a class="support-carousel__link support-carousel__link--duplicate" href="https://www.vanderbilt.edu/" target="_blank" rel="noreferrer" aria-hidden="true" tabindex="-1"><img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/supports/Vanderbilt_University-01.png" class="image-carrousel" alt="" loading="lazy" decoding="async"></a>
             </div>
           </div>
 
@@ -376,35 +349,35 @@
             <h2>Subscribe To The Podcast!</h2>
           </div>
           <div class="platform-grid">
-            
+
     <a class="platform-link" href="https://open.spotify.com/show/4hMXpuZRFbxQSfpq25CBcJ?si=743539df2d324630" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/spotify.png" alt="Spotify" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/spotify.png" alt="Spotify" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
+
     <a class="platform-link" href="https://podcasts.apple.com/us/podcast/impulse-meeting-healthcare-pioneers/id1608213336" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/apple-podcasts.png" alt="Apple" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/apple-podcasts.png" alt="Apple" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
-    <a class="platform-link" href="https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkcy5tZWdhcGhvbmUuZm0vaW1wdWxzZQ" target="_blank" rel="noreferrer">
+
+    <a class="platform-link" href="https://www.youtube.com/@ImpulsePodcastHealthcare" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/google-podcasts.png" alt="Google" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/youtube.png" alt="YouTube" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
+
     <a class="platform-link" href="https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/impulse---meeting-healthcare-pioneers" target="_blank" rel="noreferrer">
       <span class="platform-icon">
-        <img src="/static/images/platforms/amazon-music.png" alt="Amazon" loading="lazy" decoding="async">
+        <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/platforms/amazon-music.png" alt="Amazon" loading="lazy" decoding="async">
       </span>
-      
+
     </a>
-  
+
           </div>
         </div>
       </section>
@@ -413,12 +386,12 @@
         <div class="footer-brand">
           <img
             class="footer-brand-image"
-            src="/static/images/site/brand-logo.png"
+            src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/site/brand-logo.png"
             alt="Impulse Podcast"
           >
           <p>Impulse is the podcast where we dive into the most exciting breakthroughs in healthcare of our time. In each episode, we sit down with some of the brightest minds who are using technology to rethink the way we care.</p>
           <a class="support-badge" href="https://healthpodcastnetwork.com/show/impulse/" target="_blank" rel="noreferrer">
-            <img src="/static/images/site/health-podcast-network.png" alt="Health Podcast Network" loading="lazy" decoding="async">
+            <img src="https://pub-dbb09ac74fb8475eb5ddf10eae869353.r2.dev/static/images/site/health-podcast-network.png" alt="Health Podcast Network" loading="lazy" decoding="async">
           </a>
         </div>
         <div class="footer-columns">
@@ -433,7 +406,7 @@
             <div class="footer-links">
               <a href="https://open.spotify.com/show/4hMXpuZRFbxQSfpq25CBcJ?si=743539df2d324630" target="_blank" rel="noreferrer">Spotify</a>
               <a href="https://podcasts.apple.com/us/podcast/impulse-meeting-healthcare-pioneers/id1608213336" target="_blank" rel="noreferrer">Apple Podcasts</a>
-              <a href="https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkcy5tZWdhcGhvbmUuZm0vaW1wdWxzZQ" target="_blank" rel="noreferrer">Google Podcasts</a>
+              <a href="https://www.youtube.com/@ImpulsePodcastHealthcare" target="_blank" rel="noreferrer">YouTube</a>
               <a href="https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/impulse---meeting-healthcare-pioneers" target="_blank" rel="noreferrer">Amazon</a>
             </div>
           </div>
@@ -450,7 +423,7 @@
       </div>
       <span class = "footer-copyrights">© 2026 by Mathieu Chaffard - All Rights Reserved</span>
     </footer>
-  
-    <script type="module" src="/static/client/player.js"></script>
+
+    <script type="module" src="/static/client/player.js"></script><script type="module" src="/static/client/carousels.js"></script>
   </body>
 </html>

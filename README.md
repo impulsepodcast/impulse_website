@@ -40,6 +40,79 @@ Each markdown file contains:
 
 The markdown body below the frontmatter becomes the long-form episode notes on the episode page.
 
+## YouTube transcripts
+
+Episodes with a YouTube link can include a readable and downloadable transcript. Transcript source files live in `content/transcripts/` and use the episode slug as their filename.
+
+The generated episode page:
+
+- shows the transcript in a white, collapsible section that remains accessible to visitors and search engines
+- identifies it as a cleaned YouTube-caption transcript
+- offers the complete transcript as a `.txt` download
+
+Hidden white-on-white text is intentionally not used because it is inaccessible and can be treated as deceptive SEO. Native `<details>` content keeps the page usable while leaving the transcript in the page HTML.
+
+For a new YouTube episode:
+
+1. Install `yt-dlp` once, for example with `pipx install yt-dlp`.
+2. Fetch the English caption tracks:
+
+```bash
+npm run transcripts:fetch
+```
+
+3. De-duplicate YouTube's rolling captions, clean noise tokens, quality-check the result, and create the transcript files:
+
+```bash
+npm run transcripts:import
+```
+
+4. Review names, companies, and technical terms before publishing. Automatically generated captions can still contain recognition errors.
+
+## Cloudflare R2 media storage
+
+The project includes an optional R2 publishing path for source images, audio, documents, and transcript downloads. Local builds continue to work when R2 is not configured.
+
+The current media library is far below Cloudflare R2's Standard-storage free-tier allowance. For production delivery, connect the bucket to a custom domain such as `assets.impulsepodcast.com`; Cloudflare's `r2.dev` address is intended for development and is rate-limited.
+
+### One-time Cloudflare setup
+
+1. Create a Standard R2 bucket named `impulse-media`.
+2. Create an R2 API token with Object Read & Write access limited to that bucket.
+3. Connect the bucket to the production asset domain, or temporarily enable its `r2.dev` URL for testing.
+4. Copy `.env.r2.example` and export the real values in your shell or deployment secrets. Never commit credentials.
+
+### Preview the upload
+
+The upload command is a dry run unless `--apply` is supplied:
+
+```bash
+npm run r2:push
+```
+
+It prepares keys under:
+
+- `static/images/`
+- `static/audio/`
+- `static/documents/`
+- `static/transcripts/`
+
+### Push to R2
+
+After exporting `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, and `R2_PUBLIC_BASE_URL`:
+
+```bash
+npm run r2:push -- --apply
+```
+
+Build with the same public origin to make generated pages use R2 automatically:
+
+```bash
+R2_PUBLIC_BASE_URL=https://assets.impulsepodcast.com npm run build
+```
+
+Only media and downloadable documents move to R2. HTML, CSS, and browser scripts keep their existing hosting path.
+
 ## Local setup
 
 1. Install dependencies:

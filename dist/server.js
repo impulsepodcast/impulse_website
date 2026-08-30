@@ -33,6 +33,8 @@ function contentTypeForPath(pathname) {
             return "application/javascript; charset=utf-8";
         case ".json":
             return "application/json; charset=utf-8";
+        case ".txt":
+            return "text/plain; charset=utf-8";
         case ".mp3":
             return "audio/mpeg";
         case ".wav":
@@ -135,9 +137,13 @@ async function serveFile(request, response, target, statusCode = 200) {
     response.end(content);
 }
 async function serveStatic(request, response, pathname) {
+    const generatedTarget = join(publicDir, pathname.replace(/^\/+/, ""));
+    const sourceTarget = join(publicDir, pathname.replace("/static/", ""));
     const target = pathname.startsWith("/static/client/")
         ? join(clientDir, pathname.replace("/static/client/", ""))
-        : join(publicDir, pathname.replace("/static/", ""));
+        : existsSync(generatedTarget)
+            ? generatedTarget
+            : sourceTarget;
     await serveFile(request, response, target);
 }
 function pagePathnameToFile(pathname) {

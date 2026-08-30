@@ -44,6 +44,7 @@ export const SITE = {
     spotify: "https://open.spotify.com/show/4hMXpuZRFbxQSfpq25CBcJ?si=743539df2d324630",
     apple: "https://podcasts.apple.com/us/podcast/impulse-meeting-healthcare-pioneers/id1608213336",
     google: "https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkcy5tZWdhcGhvbmUuZm0vaW1wdWxzZQ",
+    youtube: "https://www.youtube.com/@ImpulsePodcastHealthcare",
     amazon:
       "https://music.amazon.fr/podcasts/900f59b7-3488-4033-bfe2-3dddf903ffcb/impulse---meeting-healthcare-pioneers",
     rss: "https://feeds.megaphone.fm/impulse",
@@ -59,6 +60,7 @@ export const SITE = {
 
 export const SITE_BASE_PATH = normalizeBasePath(process.env.SITE_BASE_PATH);
 export const SITE_URL = normalizeSiteUrl(process.env.SITE_URL) ?? `https://${SITE.domain}`;
+export const R2_PUBLIC_BASE_URL = normalizeSiteUrl(process.env.R2_PUBLIC_BASE_URL);
 
 export function sitePath(pathname: string): string {
   if (!pathname) {
@@ -71,6 +73,17 @@ export function sitePath(pathname: string): string {
 
   const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
   return `${SITE_BASE_PATH}${normalizedPath}`;
+}
+
+export function assetPath(pathname: string): string {
+  if (
+    R2_PUBLIC_BASE_URL &&
+    /^\/static\/(?:audio|documents|images|transcripts)\//.test(pathname)
+  ) {
+    return `${R2_PUBLIC_BASE_URL}${pathname}`;
+  }
+
+  return sitePath(pathname);
 }
 
 export function siteUrlForPath(pathname: string): string {
@@ -101,14 +114,44 @@ export const PLATFORM_ICON_PATHS = {
 } as const;
 
 
-export const SUPPORTS_PATHS = {
-  png1:"/static/images/supports/health-podcast-network.png",
-  png2:"/static/images/supports/Health.Tech-01.png",
-  png3:"/static/images/supports/HLTH_Europe-01.png",
-  png4:"/static/images/supports/MedTech_World-01.png",
-  png5:"/static/images/supports/Robert_Wood_Johnson-01.png",
-  png6:"/static/images/supports/Vanderbilt_University-01.png"
-} as const;
+export const SUPPORTERS = [
+  {
+    name: "Health Podcast Network",
+    image: "/static/images/supports/health-podcast-network.png",
+    url: SITE.links.healthPodcastNetwork,
+    compact: true
+  },
+  {
+    name: "health.tech",
+    image: "/static/images/supports/Health.Tech-01.png",
+    url: "https://www.health.tech/",
+    compact: false
+  },
+  {
+    name: "HLTH Europe",
+    image: "/static/images/supports/HLTH_Europe-01.png",
+    url: "https://europe.hlth.com/",
+    compact: false
+  },
+  {
+    name: "MedTech World",
+    image: "/static/images/supports/MedTech_World-01.png",
+    url: "https://med-tech.world/",
+    compact: false
+  },
+  {
+    name: "Robert Wood Johnson Foundation",
+    image: "/static/images/supports/Robert_Wood_Johnson-01.png",
+    url: "https://www.rwjf.org/",
+    compact: false
+  },
+  {
+    name: "Vanderbilt University",
+    image: "/static/images/supports/Vanderbilt_University-01.png",
+    url: "https://www.vanderbilt.edu/",
+    compact: false
+  }
+] as const;
 
 export const TESTIMONIALS = [
   {
