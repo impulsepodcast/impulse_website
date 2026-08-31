@@ -155,43 +155,151 @@ export const SUPPORTERS = [
 
 export const TESTIMONIALS = [
   {
+    author: "./jan",
+    country: "Germany",
+    rating: "★★★★★",
+    date: "September 10, 2025",
+    title: "Für alle die Mitgestalten wollen ein absolutes Muss!",
+    body:
+      "Absolut empfehlenswert für alle, die im Gesundheitswesen mitgestalten wollen. Durch spannende Gäste, kommen immer wieder frische Perspektiven und Impulse auf!"
+  },
+  {
+    author: "Xxiwjfcknsa",
+    country: "Switzerland",
+    rating: "★★★★★",
+    date: "September 4, 2025",
+    title: "Recommended",
+    body: "Great format, very interesting guests and a very thoughtful host"
+  },
+  {
     author: "Eva Lana",
     country: "United States",
     rating: "★★★★★",
-    title: "Insider's guide to the medical world",
+    date: "April 1, 2024",
+    title: "❤️❤️❤️❤️❤️",
     body:
       "Each episode feels like peeking behind the curtain with industry leaders. After listening, I'm inspired by the innovation shaping the future of healthcare. If you're curious about the latest breakthroughs, this podcast is your insider's guide to the medical world."
+  },
+  {
+    author: "Terrify04",
+    country: "United States",
+    rating: "★★★★★",
+    date: "March 28, 2024",
+    title: "Truly innovative!",
+    body:
+      "I love tuning in to see what the next topic will be as they are so good! These are truly innovative ways to approach care and I always take something back with me into my practice!"
   },
   {
     author: "Vivien_Louis",
     country: "Switzerland",
     rating: "★★★★★",
+    date: "March 10, 2024",
     title: "Fascinating topics and guests!",
     body:
-      "Gives a great understanding of what's to come in medicine and what already transforms it. Very interesting, as well for those not in the healthcare space."
+      "Gives a great understanding of what's to come in medicine and what already transforms it! Very interesting, as well for those not in the healthcare space!"
   },
   {
-    author: "./jan",
-    country: "Germany",
+    author: "iMatt'",
+    country: "France",
     rating: "★★★★★",
-    title: "Fur alle die mitgestalten wollen ein absolutes Muss!",
+    date: "March 10, 2024",
+    title: "Highly recommended!",
+    body: "A must listen for all healthcare enthusiasts!"
+  },
+  {
+    author: "Claranais",
+    country: "France",
+    rating: "★★★★★",
+    date: "August 16, 2023",
+    title: "Really relevant podcast",
     body:
-      "Absolut empfehlenswert fur alle, die im Gesundheitswesen mitgestalten wollen. Durch spannende Gaste kommen immer wieder frische Perspektiven und Impulse auf."
+      "Very interesting and relevant podcast about the biomedical field. As accessible to experts as to neophytes. Impulse features passionate specialists on a variety of subjects. I recommend listening to it !"
+  },
+  {
+    author: "Soif de Sens",
+    country: "France",
+    rating: "★★★★★",
+    date: "June 12, 2023",
+    title: "Keep going!",
+    body: "Great speakers and themes"
+  },
+  {
+    author: "vgcn5",
+    country: "France",
+    rating: "★★★★★",
+    date: "June 5, 2023",
+    title: "Super enrichissant",
+    body: "Merci pour ce contenu qualitatif et précis 🙏"
+  },
+  {
+    author: "Superbalotelli45",
+    country: "Canada",
+    rating: "★★★★★",
+    date: "June 5, 2023",
+    title: "Great Medical podcast",
+    body: "Thanks Mathieu for meeting such interesting professionals and sharing their expertise !"
   },
   {
     author: "Health_passionate",
     country: "Switzerland",
     rating: "★★★★★",
-    title: "Really interesting!",
+    date: "March 6, 2023",
+    title: "Really interesting !",
     body:
-      "The hosts are knowledgeable, engaging, and make learning about medical topics enjoyable. The production quality is very good and the guests provide great insights on various health new technologies while making it accessible for everyone. I highly recommend this podcast to anyone who wants to stay informed about the latest in the world of healthcare."
+      "The hosts are knowledgeable, engaging, and makes learning about medical topics enjoyable. The production quality is very good and the guests provide great insights on various health new technologies while making it accessible for everyone! I highly recommend this podcast to anyone who wants to stay informed about the latest in the world of healthcare. 5 stars!"
   },
   {
     author: "jmlaur",
     country: "France",
     rating: "★★★★★",
+    date: "April 20, 2022",
     title: "Super podcast",
     body:
       "Super innovative and inspiring subjects are presented, speakers are great, and the podcast is super professional. I just love it. Looking forward to the next episodes!"
+  },
+  {
+    author: "La Chaff",
+    country: "France",
+    rating: "★★★★★",
+    date: "March 12, 2022",
+    title: "Nice discovery",
+    body:
+      "Though I'm not from the field, I found the first two episodes very instructive and inspiring! Keep it up!"
+  },
+  {
+    author: "elsa alb",
+    country: "France",
+    rating: "★★★★★",
+    date: "March 9, 2022",
+    title: "What a great initiative!",
+    body:
+      "Mathieu has managed to gather the « Crème de la crème » of international experts and introduce very specific topics even to novices! Thanks for putting such effort into this, hope it'll go big!"
+  },
+  {
+    author: "Tiffany Lyly",
+    country: "France",
+    rating: "★★★★★",
+    date: "March 2, 2022",
+    title: "Brilliant!",
+    body:
+      "Thanks for initiating a podcast on Healthcare Pioneers. It is very interesting and eye-opening!"
+  },
+  {
+    author: "NicoHnk",
+    country: "Switzerland",
+    rating: "★★★★★",
+    date: "March 1, 2022",
+    title: "Novative podcast initiative in medtech",
+    body:
+      "Thanks for sharing these stories! They are refreshing and bringing true heroes in front of the mic! Looking forward to listening the next career adventures!"
+  },
+  {
+    author: "vaervera",
+    country: "Switzerland",
+    rating: "★★★★★",
+    date: "March 1, 2022",
+    title: "Well-structured & clear statements",
+    body:
+      "Well-structured, interessting and clear statements (even without huge medical knowledge)"
   }
 ] as const;

@@ -976,6 +976,12 @@ code {
   letter-spacing: 0.02em;
 }
 
+.testimonial-card__date {
+  margin: -0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
 .testimonial-card__quote {
   margin: 0;
   color: var(--muted);
@@ -1640,6 +1646,9 @@ footer{
     padding: 0.9rem 0 1rem;
   }
 
+  .about_name{
+    margin-top: 2rem;
+  }
   .brand-image {
     width: min(180px, 100%);
   }
@@ -2928,5 +2937,242 @@ footer{
 @media (max-width: 350px) {
   .sticky-player__right-controls {
     display: none;
+  }
+}
+
+/* Final overrides for the requested responsive content refinements. */
+.brand-hero__mobile-title {
+  display: none;
+}
+
+.about-name--mobile {
+  display: none;
+}
+
+.testimonials-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-flow: row;
+  grid-auto-columns: auto;
+  overflow: visible;
+  scroll-snap-type: none;
+}
+
+.testimonials-section .carousel-controls {
+  display: none;
+}
+
+.image-carrousel,
+.image-network {
+  opacity: 1;
+}
+
+@media (min-width: 901px) {
+  .collaboration-strip {
+    padding-bottom: 1.5rem;
+  }
+
+  .support-strip {
+    padding-top: 1.5rem;
+  }
+
+  main .legacy-section:last-child {
+    padding-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .brand-hero__statement {
+    justify-content: center;
+    overflow: visible;
+    margin-inline: 0;
+  }
+
+  .brand-hero__wave {
+    display: none;
+  }
+
+  .brand-hero__mobile-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    max-width: 20ch;
+    margin: 0.7rem auto 0;
+    padding-top: 2rem;
+
+    color: var(--cyan);
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    line-height: 1.08;
+
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  .brand-hero__socials {
+    margin-top: 2.5rem;
+  }
+
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-hero--about .about-photo {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .page-hero--about .about-photo img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: contain;
+  }
+
+  .about-name--mobile {
+    display: block;
+    margin: 0;
+    color: var(--blue);
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+    line-height: 1.08;
+    text-align: center;
+  }
+
+  .about-name--desktop {
+    display: none;
+  }
+
+  .page-hero--about .about-copy {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .page-hero--about .about-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .page-hero--about .about-copy p {
+    max-width: 100%;
+  }
+
+  .about-contact__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .about-contact__actions .button {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 0.65rem;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 390px) {
+  .about-contact__actions .button {
+    padding-inline: 0.4rem;
+    font-size: 0.78rem;
+  }
+}
+
+/* Review carousel: four cards on large screens, three on small screens. */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2.85rem) / 4);
+  gap: 0.95rem;
+  overflow-x: auto;
+  padding: 0.15rem 0.15rem 1rem;
+  scroll-padding-inline: 0.15rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.testimonials-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.testimonial-card {
+  scroll-snap-align: start;
+}
+
+.testimonials-section .carousel-controls {
+  display: flex;
+}
+
+@media (max-width: 900px) {
+  .testimonials-grid {
+    grid-template-columns: none;
+    grid-auto-columns: calc((100% - 1.5rem) / 1);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .page-hero--about .about-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .page-hero--about .about-name--mobile {
+    order: 1;
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .page-hero--about .about-photo {
+    order: 2;
+    align-self: center;
+  }
+
+  .page-hero--about .about-copy {
+    display: flex;
+    order: 3;
+    flex-direction: column;
+  }
+
+  .page-hero--about .about-copy > p {
+    width: 100%;
+    margin-inline: auto;
+    padding: 2ch 2ch;
+  }
+
+  .page-hero--about .about-contact {
+    width: 100%;
+    justify-items: center;
+    padding: 0ch 2ch;
+  }
+
+  .page-hero--about .about-contact__label {
+    width: 100%;
+    text-align: center;
+    padding: 0ch 2ch;
+  }
+
+  .page-hero--about .about-contact__actions {
+    width: 100%;
+    justify-content: center;
   }
 }

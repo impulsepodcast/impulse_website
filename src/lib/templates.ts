@@ -466,8 +466,8 @@ function renderTestimonialsSection(): string {
     <section class="testimonials-section" data-carousel>
       <div class="container">
         <div class="section-heading section-heading--stack testimonials-section__heading">
-          <h2>Conversations that resonate across the healthcare ecosystem</h2>
-          <p>Guests, operators, founders, and listeners who make the Impulse community what it is.</p>
+          <h2>Conversations that resonate across the healthtech ecosystem</h2>
+          <p>Professionals, physicians, researchers, founders, and listeners who make the Impulse community what it is.</p>
         </div>
         <div class="testimonials-grid" role="region" aria-label="Listener reviews" tabindex="0" data-carousel-viewport>
           ${TESTIMONIALS.map(
@@ -475,6 +475,7 @@ function renderTestimonialsSection(): string {
               <article class="testimonial-card">
                 <div class="testimonial-card__body">
                   <p class="testimonial-card__rating">${escapeHtml(testimonial.rating)}</p>
+                  <p class="testimonial-card__date">${escapeHtml(testimonial.date)}</p>
                   <h3>${escapeHtml(testimonial.title)}</h3>
                   <p class="testimonial-card__quote">${escapeHtml(testimonial.body)}</p>
                   <p class="testimonial-card__author">
@@ -497,8 +498,8 @@ function renderCollaborationSection(): string {
     <section class="collaboration-strip">
       <div class="container collaboration-strip__inner">
         <div class="collaboration-strip__copy">
-          <p class="eyebrow">Let’s Build Something Together</p>
-          <h2>A Collaboration To Propose?</h2>
+          <p class="eyebrow">Let’s build something together</p>
+          <h2>A collaboration to propose?</h2>
           <p>${escapeHtml(SITE.collaborationPrompt)} Let’s get in touch.</p>
         </div>
         <a class="button button--primary collaboration-strip__button" href="${escapeAttribute(
@@ -724,7 +725,7 @@ function renderFooter(): string {
     <footer class="site-footer">
       <section class="support-strip">
         <div class="container support-strip__inner">
-          <h2>They Support Us!</h2>
+          <h2>They support us!</h2>
 
           <div class="support-carousel">
             <div class="support-carousel__track">
@@ -738,7 +739,7 @@ function renderFooter(): string {
       <section class="subscribe-strip">
         <div class="container subscribe-strip__inner">
           <div class="subscribe-strip__intro">
-            <h2>Subscribe To The Podcast!</h2>
+            <h2>Subscribe to the podcast!</h2>
           </div>
           <div class="platform-grid">
             ${renderSitePlatformLinks()}
@@ -760,13 +761,13 @@ function renderFooter(): string {
         </div>
         <div class="footer-columns">
           <div>
-            <p class="footer-title">Social Media</p>
+            <p class="footer-title">Social media</p>
             <div class="footer-links">
               ${footerLink(SITE.links.brandLinkedIn, "LinkedIn")}
             </div>
           </div>
           <div>
-            <p class="footer-title">Streaming Platforms</p>
+            <p class="footer-title">Streaming platforms</p>
             <div class="footer-links">
               ${footerLink(SITE.links.spotify, "Spotify")}
               ${footerLink(SITE.links.apple, "Apple Podcasts")}
@@ -895,7 +896,7 @@ function renderBasePage(options: PageOptions): string {
 
 export function renderHomePage(episodes: Episode[], tags: string[]): string {
   const latest = episodes[0];
-  const featured = selectMixedEpisodes(episodes.slice(1), 12);
+  const featured = episodes.slice(1);
   const latestGuest = displayGuestName(latest);
   const latestCompany = displayCompanyName(latest);
   const stickyPlayerEpisode = episodes.find((episode) => Boolean(episode.previewAudio)) ?? latest;
@@ -915,6 +916,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
                   <div class="brand-hero__wave">
                     <img src="${escapeAttribute(assetPath(SITE.assets.wave))}" aria-hidden="true" class="heartbeat-svg" decoding="async" fetchpriority="high">
                   </div>
+                  <h1 class="brand-hero__mobile-title">Meet the people shaping medical progress</h1>
                 </div>
                 <div class="brand-hero__socials">
                   <div class="brand-hero__socials__follow">
@@ -969,7 +971,7 @@ export function renderHomePage(episodes: Episode[], tags: string[]): string {
 
         <section class="home-archive" data-carousel data-carousel-autoplay="5200">
           <div class="container">
-            <h2 class="home-archive__heading">Discover Other Episodes</h2>
+            <h2 class="home-archive__heading">Discover other episodes</h2>
             <div class="home-archive__grid" role="region" aria-label="Featured episodes" tabindex="0" data-carousel-viewport>
               ${featured
                 .map(
@@ -1110,7 +1112,7 @@ export function renderEpisodePage(episode: Episode, episodes: Episode[]): string
 
         <section class="home-archive home-archive--detail" data-carousel>
           <div class="container">
-            <h2 class="home-archive__heading">Discover Other Episodes</h2>
+            <h2 class="home-archive__heading">Discover other episodes</h2>
             <div class="home-archive__grid" role="region" aria-label="Related episodes" tabindex="0" data-carousel-viewport>
               ${relatedEpisodes
                 .map(
@@ -1147,13 +1149,14 @@ export function renderAboutPage(episodes: Episode[]): string {
       <main>
         <section class="page-hero page-hero--legacy page-hero--about">
           <div class="container about-grid about-grid--legacy">
+            <h1 class="about-name about-name--mobile">${escapeHtml(SITE.ownerName)}</h1>
             <div class="about-photo">
               <img src="${escapeAttribute(assetPath(SITE.hostPhoto))}" alt="${escapeAttribute(
       SITE.ownerName
     )}" decoding="async">
             </div>
             <div class="about-copy">
-              <h1 class = "about_name">${escapeHtml(SITE.ownerName)}</h1>
+              <h1 class="about-name about-name--desktop">${escapeHtml(SITE.ownerName)}</h1>
               <p class="about-role">${escapeHtml(SITE.hostTitle)}</p>
               <p>${escapeHtml(SITE.hostBio)}</p>
               <div class="about-contact">
